@@ -1,0 +1,51 @@
+@import "tailwindcss";
+@config "./../tailwind.config.js";
+
+@font-face {
+    font-family: 'Anton';
+    src: url('/Anton-Regular.ttf') format('ttf');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+@media print {
+    section {
+        @apply break-inside-avoid
+    }
+}
+
+#__next {
+    @apply relative
+}
+
+body {
+    font-family: Roboto;
+}
+
+.book-container > div {
+    @apply relative
+}
+
+.book-container > div.bg-white:nth-child(even)::after {
+    content: '';
+    position: absolute;
+    display: block;
+    top: 0px;
+    bottom: 0px;
+    background: linear-gradient(90deg,rgba(255, 255, 255, 0) 0%, rgba(163, 163, 163, 0.75) 50%, rgba(255, 255, 255, 0) 100%);
+    left: -5%;    
+}
+
+.chessboard {
+    -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+                  color-adjust: exact;
+    
+    background: repeating-linear-gradient(
+        -45deg,
+        white,
+        white 2px,
+        var(--color-gray-400) 2px,
+        var(--color-gray-400) 4px
+    );
+}

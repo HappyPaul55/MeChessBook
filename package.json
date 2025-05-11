@@ -1,0 +1,33 @@
+{
+  "name": "@happypaul55/my-chess-book",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "generate": "node ./generate-pdf.js"
+  },
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.1.6",
+    "chess.js": "^1.2.0",
+    "next": "^13.0.4",
+    "next-translate": "^1.5.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.4.0",
+    "react-pdf-tailwind": "^2.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.6",
+    "@types/react": "^18.0.15",
+    "@types/react-dom": "^18.0.6",
+    "autoprefixer": "^10.4.7",
+    "eslint": "^8.20.0",
+    "eslint-config-next": "^13.0.4",
+    "postcss": "^8.4.14",
+    "tailwindcss": "^4.1.6",
+    "typescript": "^5.8.3"
+  }
+}
