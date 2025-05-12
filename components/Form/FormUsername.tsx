@@ -33,7 +33,7 @@ export default function FormUsername(
           type="submit"
           className="mt-4 py-3 rounded-lg bg-white text-purple-600 font-semibold hover:bg-purple-100 transition duration-300 cursor-pointer"
         >
-          Let's Go...
+          Let&apos;s Go...
         </button>
       </form>
     </>

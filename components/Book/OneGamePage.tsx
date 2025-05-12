@@ -4,6 +4,7 @@ import ChessBoard from "../Chess/ChessBoard";
 import PlayerTitle from "../PlayerTitle";
 import Page, { type PageProps } from "./page";
 import GameTitle from "../GameTitle";
+import ContentPage from "./ContentPage";
 
 export default function OneGamePage(props: PageProps & { game: Game }) {
   const moves = props.game.moves.split(" ");
@@ -68,7 +69,7 @@ export default function OneGamePage(props: PageProps & { game: Game }) {
   }
 
   return (
-    <Page {...props}>
+    <ContentPage {...props}>
       <ChessBoard game={props.game} />
       <div>
         <GameTitle
@@ -97,23 +98,27 @@ export default function OneGamePage(props: PageProps & { game: Game }) {
             : (
               <div className={`${columns}`}>
                 <table className="w-full">
-                  {pairs.map((moves, i) => (
-                    <tr
-                      key={i}
-                      className={i === 13
-                        ? "border-t-2 border-b-2 border-black"
-                        : ""}
-                    >
-                      <td className="text-gray-400 w-6 font-anton">{i + 1}</td>
-                      <td>{moves[0]}</td>
-                      <td>{moves[1]}</td>
-                    </tr>
-                  ))}
+                  <tbody>
+                    {pairs.map((moves, i) => (
+                      <tr
+                        key={i}
+                        className={i === 13
+                          ? "border-t-2 border-b-2 border-black"
+                          : ""}
+                      >
+                        <td className="text-gray-400 w-6 font-anton">
+                          {i + 1}
+                        </td>
+                        <td>{moves[0]}</td>
+                        <td>{moves[1]}</td>
+                      </tr>
+                    ))}
+                  </tbody>
                 </table>
               </div>
             )}
         </div>
       </div>
-    </Page>
+    </ContentPage>
   );
 }

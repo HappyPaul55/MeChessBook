@@ -12,7 +12,7 @@ export type Player = LichessPlayer;
 export type Settings = {
   pageSize: "A4" | "A5";
   color: "all" | "white" | "black";
-  results: "all" | "wins" | "losses";
+  results: "all" | "wins" | "draws" | "losses";
   gameType: string;
   rated: "all" | "rated" | "unrated";
 };

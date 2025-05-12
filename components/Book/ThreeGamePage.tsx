@@ -1,9 +1,9 @@
 import { Fragment } from "react";
 import { Game, Settings } from "../../types";
 import ChessBoard from "../Chess/ChessBoard";
-import PlayerTitle from "../PlayerTitle";
-import Page, { type PageProps } from "./page";
+import { type PageProps } from "./page";
 import GameTitle from "../GameTitle";
+import ContentPage from "./ContentPage";
 
 function GameRow(props: { index: number; settings: Settings; game: Game }) {
   const movess = props.game.moves.split(" ");
@@ -104,18 +104,22 @@ function GameRow(props: { index: number; settings: Settings; game: Game }) {
             : (
               <div className={`${columns}`}>
                 <table className="w-full">
-                  {pairs.map((moves, i) => (
-                    <tr
-                      key={i}
-                      className={i === 13
-                        ? "border-t-2 border-b-2 border-black"
-                        : ""}
-                    >
-                      <td className="text-gray-400 w-6 font-anton">{i + 1}</td>
-                      <td>{moves[0]}</td>
-                      <td>{moves[1]}</td>
-                    </tr>
-                  ))}
+                  <tbody>
+                    {pairs.map((moves, i) => (
+                      <tr
+                        key={i}
+                        className={i === 13
+                          ? "border-t-2 border-b-2 border-black"
+                          : ""}
+                      >
+                        <td className="text-gray-400 w-6 font-anton">
+                          {i + 1}
+                        </td>
+                        <td>{moves[0]}</td>
+                        <td>{moves[1]}</td>
+                      </tr>
+                    ))}
+                  </tbody>
                 </table>
               </div>
             )}
@@ -127,7 +131,7 @@ function GameRow(props: { index: number; settings: Settings; game: Game }) {
 
 export default function ThreeGamePage(props: PageProps & { games: Game[] }) {
   return (
-    <Page {...props}>
+    <ContentPage {...props}>
       {props.games.map((game, i) => (
         <GameRow
           index={i}
@@ -136,6 +140,6 @@ export default function ThreeGamePage(props: PageProps & { games: Game[] }) {
           game={game}
         />
       ))}
-    </Page>
+    </ContentPage>
   );
 }

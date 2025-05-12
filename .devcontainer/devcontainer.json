@@ -1,0 +1,29 @@
+{
+  "name": "BookMaker Container",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:latest",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts",
+      "pnpm": "latest"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "editor.tabSize": 2
+      },
+      "extensions": [
+        "dbaeumer.vscode-eslint"
+      ]
+    }
+  },
+  "mounts": [
+    "source=${localEnv:HOME}/.gitconfig,target=/home/node/.gitconfig,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.ssh,target=/home/node/.ssh,type=bind,consistency=cached"
+  ],
+  "postCreateCommand": "pnpm install",
+  "containerEnv": {
+    "npm_config_store_dir": "/home/node/.local/share/pnpm/store"
+  }
+}

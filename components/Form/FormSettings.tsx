@@ -12,6 +12,7 @@ export default function FormSettings(
   const [results, setResults] = useState<Settings["results"]>("all");
   const [rated, setRated] = useState<Settings["rated"]>("all");
   const [gameType, setGameType] = useState<Settings["gameType"]>("all");
+  const [pageSize, setPageSize] = useState<Settings["pageSize"]>("A4");
 
   return (
     <>
@@ -26,16 +27,25 @@ export default function FormSettings(
             results,
             gameType,
             rated,
-            pageSize: "A4",
+            pageSize,
           })}
       >
+        <select
+          value={pageSize}
+          onChange={(e) => setPageSize(e.target.value as Settings["pageSize"])}
+          className="px-4 py-3 rounded-lg bg-white placeholder-white text-black border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-md"
+        >
+          <option value="A4">Book Size: A4</option>
+          <option value="A5">Book Size: A5</option>
+        </select>
         <select
           value={results}
           onChange={(e) => setResults(e.target.value as Settings["results"])}
           className="px-4 py-3 rounded-lg bg-white placeholder-white text-black border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-md"
         >
-          <option value="all">Wins and Losses</option>
+          <option value="all">Wins, Draws and Losses</option>
           <option value="wins">Just Wins</option>
+          <option value="draws">Just Draws</option>
           <option value="losses">Just Losses</option>
         </select>
         <select
@@ -70,7 +80,7 @@ export default function FormSettings(
           type="submit"
           className="mt-4 py-3 rounded-lg bg-white text-purple-600 font-semibold hover:bg-purple-100 transition duration-300 cursor-pointer"
         >
-          Let's Go...
+          Let&apos;s Go...
         </button>
       </form>
     </>

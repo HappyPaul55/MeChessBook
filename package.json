@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test": "echo 'no tests'",
     "lint": "next lint",
     "generate": "node ./generate-pdf.js"
   },

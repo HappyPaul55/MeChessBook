@@ -2,6 +2,7 @@ import { useState } from "react";
 import Form from "../components/Form";
 import Book from "../components/Book";
 import type { Game, Settings, User } from "../types";
+import Head from "next/head";
 
 export default function HomePage() {
   const [data, setData] = useState<
@@ -15,26 +16,28 @@ export default function HomePage() {
           <Form setData={setData} />
         </div>
 
-        <style jsx global>
-          {`
-          @keyframes gradient {
-            0% {
-              background-position: 0% 50%;
-            }
-            50% {
-              background-position: 100% 50%;
-            }
-            100% {
-              background-position: 0% 50%;
-            }
-          }
+        <Head>
+          <style>
+            {`
+              @keyframes gradient {
+                0% {
+                  background-position: 0% 50%;
+                }
+                50% {
+                  background-position: 100% 50%;
+                }
+                100% {
+                  background-position: 0% 50%;
+                }
+              }
 
-          .animate-gradient {
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-          }
-        `}
-        </style>
+              .animate-gradient {
+                background-size: 400% 400%;
+                animation: gradient 15s ease infinite;
+              }
+            `}
+          </style>
+        </Head>
       </div>
     );
   }

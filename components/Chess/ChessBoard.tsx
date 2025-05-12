@@ -47,12 +47,12 @@ export default function ChessBoard(props: { game: Game }) {
       </div>
       <div className="absolute top-full left-0 right-0 aspect-none grid grid-cols-8 col-span-8">
         {(new Array(8).fill(true)).map((_, i) => {
-          return <div className="text-center h-0">{columns[i]}</div>;
+          return <div key={i} className="text-center h-0">{columns[i]}</div>;
         })}
       </div>
       <div className="absolute top-0 -left-4 bottom-0 aspect-none grid grid-cols-1 col-span-8">
         {(new Array(8).fill(true)).map((_, i) => {
-          return <div className="flex items-center">{8 - i}</div>;
+          return <div key={i} className="flex items-center">{8 - i}</div>;
         })}
       </div>
     </div>
