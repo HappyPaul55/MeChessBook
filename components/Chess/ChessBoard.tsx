@@ -12,11 +12,21 @@ const columns = [
   "H",
 ] as const;
 
-export default function ChessBoard(props: { game: Game }) {
+export default function ChessBoard(props: { game: Game, className?: string }) {
   const chess = new Chess();
-  chess.loadPgn(props.game.pgn);
+  chess.loadPgn(props.game.board.pgn);
+  while (chess.moveNumber() > 1 && (chess.moveNumber() - 1) * 2 + Number(chess.turn() === 'b') > props.game.board.ply) {
+    chess.undo();
+  }
 
-  const board = chess.board();
+  console.log(chess.moves())
+
+  const board = [...chess.board()];
+
+  if (chess.turn() === 'b') {
+    board.reverse();
+    board.map(row => row.reverse());
+  }
 
   return (
     <div className="mx-4 relative chessboard">
@@ -34,9 +44,8 @@ export default function ChessBoard(props: { game: Game }) {
               {board[row][col]?.type
                 ? (
                   <img
-                    src={`/pieces/${
-                      board[row][col]?.color === "w" ? "white" : "black"
-                    }/${board[row][col]?.type.toUpperCase()}.svg`}
+                    src={`/pieces/${board[row][col]?.color === "w" ? "white" : "black"
+                      }/${board[row][col]?.type.toUpperCase()}.svg`}
                     className={`block m-auto w-full h-full`}
                   />
                 )
@@ -45,14 +54,18 @@ export default function ChessBoard(props: { game: Game }) {
           );
         })}
       </div>
-      <div className="absolute top-full left-0 right-0 aspect-none grid grid-cols-8 col-span-8">
+      <div className={`${props.className ?? ''} absolute top-full left-0 right-0 aspect-none grid grid-cols-8 col-span-8`}>
         {(new Array(8).fill(true)).map((_, i) => {
           return <div key={i} className="text-center h-0">{columns[i]}</div>;
         })}
       </div>
-      <div className="absolute top-0 -left-4 bottom-0 aspect-none grid grid-cols-1 col-span-8">
+      <div className={`${props.className ?? ''} absolute top-0 -left-4 bottom-0 aspect-none grid grid-cols-1 col-span-8`}>
         {(new Array(8).fill(true)).map((_, i) => {
-          return <div key={i} className="flex items-center">{8 - i}</div>;
+          return <div key={i} className="flex items-center">{
+            chess.turn() === 'w'
+              ? 8 - i
+              : i + 1
+          }</div>;
         })}
       </div>
     </div>

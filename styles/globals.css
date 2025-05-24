@@ -105,3 +105,14 @@ body {
         var(--color-gray-400) 4px
     );
 }
+
+
+.page-even {
+    @apply pl-16;
+    @apply pr-8;
+}
+
+.page-odd {
+    @apply pl-8;
+    @apply pr-16;
+}

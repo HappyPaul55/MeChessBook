@@ -50,7 +50,7 @@ export default function Book(
         style={{ zoom: props.data.settings.pageSize === "A5" ? 1 : 1.5 }}
       >
         <div className="text-5xl">The</div>
-        <div>{props.data.user.username}</div>
+        <div>{props.data.user.name}</div>
         <div>Chess</div>
         <div>Book</div>
       </h1>
@@ -79,9 +79,9 @@ export default function Book(
             Created dynamically from the content of{" "}
             <a
               className="underline"
-              href={`https://lichess.org/@/${props.data.user.username}`}
+              href={`https://lichess.org/@/${props.data.user.name}`}
             >
-              https://lichess.org/@/{props.data.user.username}
+              https://lichess.org/@/{props.data.user.name}
             </a>
           </p>
 
@@ -208,7 +208,7 @@ export default function Book(
       >
         This book is made up of {props.data.games.length.toLocaleString()}{" "}
         games from{" "}
-        {props.data.user.username}. It includes, wins and losses and everything
+        {props.data.user.name}. It includes, wins and losses and everything
         in-between.
         <br />
         <br />
@@ -220,11 +220,10 @@ export default function Book(
 
   return (
     <div
-      className={`print:w-auto mx-auto book-container simulate print:block print:mx-0 ${
-        props.data.settings.pageSize === "A4"
-          ? "w-a4 2xl:grid 2xl:grid-cols-2 2xl:w-a2"
-          : "w-a5 xl:grid xl:grid-cols-2 xl:w-a3"
-      }`}
+      className={`print:w-auto mx-auto book-container simulate print:block print:mx-0 ${props.data.settings.pageSize === "A4"
+        ? "w-a4 2xl:grid 2xl:grid-cols-2 2xl:w-a2"
+        : "w-a5 xl:grid xl:grid-cols-2 xl:w-a3"
+        }`}
     >
       <div />
       {pages}

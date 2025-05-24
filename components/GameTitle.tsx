@@ -1,8 +1,8 @@
-import { Player } from "../types";
+import { User } from "../types";
 import PlayerTitle from "./PlayerTitle";
 
 export default function GameTitle(
-  props: { zoom?: number; white: Player; black: Player },
+  props: { zoom?: number; white: User; black: User },
 ) {
   return (
     <h1

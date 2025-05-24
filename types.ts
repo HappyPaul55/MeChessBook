@@ -1,13 +1,24 @@
-import {
-  Game as LichessGame,
-  Player as LichessPlayer,
-  User as LichessUser,
-} from "./lichess";
+export type User = {
+  name: string,
+  rating?: number,
+  ratingProvisional?: boolean
+  title?: string,
+};
 
-// @todo: Make our own types.
-export type User = LichessUser;
-export type Game = LichessGame;
-export type Player = LichessPlayer;
+export type Game = {
+  id: string,
+  white: User,
+  black: User,
+  board: {
+    pgn: string,
+    ply: number,
+  },
+  moves: string,
+  analysis?: {
+    eval: number,
+    type: 'mistake' /** ? */ | 'blunder' /** ?? */ | 'inaccuracy' /** ?! */
+  }
+};
 
 export type Settings = {
   pageSize: "A4" | "A5";

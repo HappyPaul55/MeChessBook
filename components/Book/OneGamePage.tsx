@@ -1,22 +1,14 @@
 import { Fragment } from "react";
 import { Game } from "../../types";
 import ChessBoard from "../Chess/ChessBoard";
-import PlayerTitle from "../PlayerTitle";
-import Page, { type PageProps } from "./page";
+import { type PageProps } from "./page";
 import GameTitle from "../GameTitle";
 import ContentPage from "./ContentPage";
+import MoveListTable from "../Chess/MoveListTable";
+import MoveListInline from "../Chess/MoveListInline";
 
 export default function OneGamePage(props: PageProps & { game: Game }) {
   const moves = props.game.moves.split(" ");
-  const pairs: [string, string?][] = [];
-
-  for (let i = 0; i < moves.length; i++) {
-    const pairIndex = Math.floor(i / 2);
-    if (!pairs[pairIndex]) {
-      pairs[pairIndex] = [""];
-    }
-    pairs[pairIndex][i % 2] = moves[i];
-  }
 
   // Find the best variant to use to get the most out the move data.
   let style: "table" | "inline" = "table";
@@ -74,50 +66,16 @@ export default function OneGamePage(props: PageProps & { game: Game }) {
       <div>
         <GameTitle
           zoom={props.settings.pageSize === "A4" ? 1 : 0.75}
-          black={props.game.players.black}
-          white={props.game.players.white}
+          black={props.game.black}
+          white={props.game.white}
         />
-        <div className={size}>
-          {style === "inline"
-            ? (
-              <div className="text-justify">
-                {pairs.map((moves, i) => (
-                  <Fragment key={i}>
-                    <span className="whitespace-nowrap">
-                      <span className="text-gray-400 font-anton">{i + 1}</span>
-                      &nbsp;
-                      {moves[0]}
-                      &nbsp;
-                      {moves[1]}.
-                    </span>
-                    {" "}
-                  </Fragment>
-                ))}
-              </div>
-            )
-            : (
-              <div className={`${columns}`}>
-                <table className="w-full">
-                  <tbody>
-                    {pairs.map((moves, i) => (
-                      <tr
-                        key={i}
-                        className={i === 13
-                          ? "border-t-2 border-b-2 border-black"
-                          : ""}
-                      >
-                        <td className="text-gray-400 w-6 font-anton">
-                          {i + 1}
-                        </td>
-                        <td>{moves[0]}</td>
-                        <td>{moves[1]}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-        </div>
+        {style === "inline"
+          ? (
+            <MoveListInline moves={moves} highlightedPly={props.game.board.ply} size={size} />
+          )
+          : (
+            <MoveListTable moves={moves} highlightedPly={props.game.board.ply} size={size} columns={columns} />
+          )}
       </div>
     </ContentPage>
   );

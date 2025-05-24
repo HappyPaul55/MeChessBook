@@ -11,24 +11,26 @@
     "generate": "node ./generate-pdf.js"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4.1.6",
+    "@tailwindcss/postcss": "^4.1.7",
+    "babel-plugin-react-compiler": "19.1.0-rc.2",
     "chess.js": "^1.2.0",
-    "next": "^13.0.4",
-    "next-translate": "^1.5.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-icons": "^4.4.0",
+    "next": "^15.3.2",
+    "next-translate": "^2.6.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-icons": "^5.5.0",
     "react-pdf-tailwind": "^2.3.0"
   },
   "devDependencies": {
-    "@types/node": "^18.0.6",
-    "@types/react": "^18.0.15",
-    "@types/react-dom": "^18.0.6",
-    "autoprefixer": "^10.4.7",
-    "eslint": "^8.20.0",
-    "eslint-config-next": "^13.0.4",
-    "postcss": "^8.4.14",
-    "tailwindcss": "^4.1.6",
+    "@types/node": "^22.15.18",
+    "@types/react": "^19.1.4",
+    "@types/react-dom": "^19.1.5",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.27.0",
+    "eslint-config-next": "^15.3.2",
+    "next-translate-plugin": "^2.6.2",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.7",
     "typescript": "^5.8.3"
   }
 }

@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
-import type { Game, User as LichessUser } from "../../lichess";
-import type { Settings, User } from "../../types";
+import type { Game as LichessGame, User as LichessUser } from "../../lichess";
+import type { Settings, User, Game } from "../../types";
 import FormLoading from "./FormLoading";
 import FormSettings from "./FormSettings";
 import FormUsername from "./FormUsername";
+import processGame from "../../lichess";
 
 export default function Form(
   props: {
@@ -90,7 +91,7 @@ export default function Form(
         const { done, value } = await reader.read();
         if (done) {
           console.log({ games });
-          props.setData({ user, games, settings });
+          props.setData({ user: { name: user.username }, games, settings });
           return;
         }
         const decoder = new TextDecoder("utf-8");
@@ -100,7 +101,12 @@ export default function Form(
           for (const line of lines) {
             if (line) {
               try {
-                games.push(JSON.parse(line) as Game);
+                const data = JSON.parse(line) as LichessGame;
+                const result = await processGame(data);
+                if (result) {
+                  // Game will only be added if it's interesting.
+                  games.push(result);
+                }
               } catch (e) {
                 console.warn(e);
                 console.warn(line);

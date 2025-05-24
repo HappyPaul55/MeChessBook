@@ -1,3 +1,5 @@
+import { Game as GenericGame } from './types';
+
 export interface User {
   id: string;
   username: string;
@@ -91,4 +93,29 @@ export interface Clock {
   initial: number;
   increment: number;
   totalTime: number;
+}
+
+function randomNumberBetween(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+export default async function processGame(game: Game): Promise<GenericGame | undefined> {
+  return {
+    id: game.id,
+    white: {
+      name: game.players.white.user.name,
+      rating: game.players.white.rating,
+      ratingProvisional: game.players.white.provisional,
+    },
+    black: {
+      name: game.players.black.user.name,
+      rating: game.players.black.rating,
+      ratingProvisional: game.players.black.provisional,
+    },
+    moves: game.moves,
+    board: {
+      pgn: game.pgn,
+      ply: randomNumberBetween(1, game.moves.split(" ").length),
+    }
+  };
 }
