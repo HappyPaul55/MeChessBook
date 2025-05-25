@@ -1,9 +1,17 @@
-import { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form"
+
+type Inputs = {
+  username: string;
+}
 
 export default function FormUsername(
   props: { error: boolean; setUsername: (username: string) => void },
 ) {
-  const [username, setUsername] = useState("");
+  const {
+    register,
+    handleSubmit,
+  } = useForm<Inputs>()
+  const onSubmit: SubmitHandler<Inputs> = (data) => props.setUsername(data.username)
 
   return (
     <>
@@ -12,10 +20,7 @@ export default function FormUsername(
       </h1>
       <form
         className="flex flex-col gap-4"
-        onSubmit={(e) => {
-          e.preventDefault();
-          props.setUsername(username);
-        }}
+        onSubmit={handleSubmit(onSubmit)}
       >
         {props.error && (
           <div className="bg-red-600 text-white px-4 py-3 text-sm rounded-lg">
@@ -23,9 +28,7 @@ export default function FormUsername(
           </div>
         )}
         <input
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          {...register("username")}
           placeholder="Lichess Username"
           className="px-4 py-3 rounded-lg bg-white placeholder-black/30 text-black border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-md"
         />

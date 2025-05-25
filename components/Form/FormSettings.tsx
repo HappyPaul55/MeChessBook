@@ -1,6 +1,36 @@
+import { useForm, SubmitHandler, Controller } from "react-hook-form"
 import type { User as LichessUser } from "../../lichess";
-import { useState } from "react";
 import { Settings } from "../../types";
+
+function Selector<T extends string>(props: {
+  setValue: (value: T) => void,
+  value: T,
+  title: string,
+  options: T[]
+}) {
+  return <div className="text-white">
+    <h3 className="text-lg">{props.title}</h3>
+    <div className="row flex w-full gap-4">
+      {
+        props.options.map(option => <button
+          key={option}
+          className={`py-3 rounded-lg  text-purple-600 font-semibold transition duration-300 cursor-pointer w-full ${option === props.value
+            ? 'bg-purple-700 text-white hover:bg-purple-800'
+            : 'bg-white text-purple-600 hover:bg-purple-100'
+            }
+          `}
+          type="button"
+          onClick={() => {
+            props.setValue(option)
+          }}
+        >
+          {option}
+        </button>)
+      }
+    </div>
+  </div>
+
+}
 
 export default function FormSettings(
   props: {
@@ -8,11 +38,19 @@ export default function FormSettings(
     setSettings: (settings: Settings) => void;
   },
 ) {
-  const [color, setColor] = useState<Settings["color"]>("all");
-  const [results, setResults] = useState<Settings["results"]>("all");
-  const [rated, setRated] = useState<Settings["rated"]>("all");
-  const [gameType, setGameType] = useState<Settings["gameType"]>("all");
-  const [pageSize, setPageSize] = useState<Settings["pageSize"]>("A4");
+  const {
+    handleSubmit,
+    control,
+  } = useForm<Settings>({
+    defaultValues: {
+      pageSize: "A4",
+      color: "all",
+      result: "all",
+      rated: "all",
+      analysed: "all",
+    }
+  })
+  const onSubmit: SubmitHandler<Settings> = (data) => props.setSettings(data)
 
   return (
     <>
@@ -21,61 +59,90 @@ export default function FormSettings(
       </h1>
       <form
         className="flex flex-col gap-4"
-        onSubmit={() =>
-          props.setSettings({
-            color,
-            results,
-            gameType,
-            rated,
-            pageSize,
-          })}
+        onSubmit={handleSubmit(onSubmit)}
       >
-        <select
-          value={pageSize}
-          onChange={(e) => setPageSize(e.target.value as Settings["pageSize"])}
-          className="px-4 py-3 rounded-lg bg-white placeholder-white text-black border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-md"
-        >
-          <option value="A4">Book Size: A4</option>
-          <option value="A5">Book Size: A5</option>
-        </select>
-        <select
-          value={results}
-          onChange={(e) => setResults(e.target.value as Settings["results"])}
-          className="px-4 py-3 rounded-lg bg-white placeholder-white text-black border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-md"
-        >
-          <option value="all">Wins, Draws and Losses</option>
-          <option value="wins">Just Wins</option>
-          <option value="draws">Just Draws</option>
-          <option value="losses">Just Losses</option>
-        </select>
-        <select
-          value={results}
-          onChange={(e) => setColor(e.target.value as Settings["color"])}
-          className="px-4 py-3 rounded-lg bg-white placeholder-white text-black border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-md"
-        >
-          <option value="all">Black and White</option>
-          <option value="black">Just Black</option>
-          <option value="white">Just White</option>
-        </select>
-        <select
-          value={gameType}
-          onChange={(e) => setGameType(e.target.value)}
-          className="px-4 py-3 rounded-lg bg-white placeholder-white text-black border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-md"
-        >
-          <option value="all">All Game Types</option>
-          {Object.keys(props.user.perfs).map((gameType) => (
-            <option key={gameType} value={gameType}>{gameType}</option>
-          ))}
-        </select>
-        <select
-          value={rated}
-          onChange={(e) => setRated(e.target.value as Settings["rated"])}
-          className="px-4 py-3 rounded-lg bg-white placeholder-white text-black border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-md"
-        >
-          <option value="all">Rated and Unrated</option>
-          <option value="rated">Rated</option>
-          <option value="unrated">Unrated</option>
-        </select>
+
+        <Controller
+          name="analysed"
+          control={control}
+          render={({ field }) => (
+            <Selector
+              value={field.value}
+              title={field.name}
+              options={["all", "only"]}
+              setValue={field.onChange}
+            />
+          )}
+        />
+
+        <Controller
+          name="result"
+          control={control}
+          render={({ field }) => (
+            <Selector
+              value={field.value}
+              title={field.name}
+              options={["wins", "all", "losses"]}
+              setValue={field.onChange}
+            />
+          )}
+        />
+
+        <Controller
+          name="rated"
+          control={control}
+          render={({ field }) => (
+            <Selector
+              value={field.value}
+              title={field.name}
+              options={["rated", "all"]}
+              setValue={field.onChange}
+            />
+          )}
+        />
+
+        <Controller
+          name="color"
+          control={control}
+          render={({ field }) => (
+            <Selector
+              value={field.value}
+              title={field.name}
+              options={["white", "all", "black"]}
+              setValue={field.onChange}
+            />
+          )}
+        />
+
+        <Controller
+          name="pageSize"
+          control={control}
+          render={({ field }) => (
+            <Selector
+              value={field.value}
+              title={field.name}
+              options={["A4", "A5"]}
+              setValue={field.onChange}
+            />
+          )}
+        />
+        <details>
+          <summary className="text-white">Show Advanced Settings... </summary>
+          <div className="mt-4">
+            <Controller
+              name="pageSize"
+              control={control}
+              render={({ field }) => (
+                <Selector
+                  value={field.value}
+                  title={field.name}
+                  options={["A4", "A5"]}
+                  setValue={field.onChange}
+                />
+              )}
+            />
+          </div>
+        </details>
         <button
           type="submit"
           className="mt-4 py-3 rounded-lg bg-white text-purple-600 font-semibold hover:bg-purple-100 transition duration-300 cursor-pointer"

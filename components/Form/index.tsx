@@ -74,6 +74,9 @@ export default function Form(
       if (settings.gameType !== "all") {
         filters.push(`perfType=${settings.gameType}`);
       }
+      if (settings.analysed !== "all") {
+        filters.push(`analysed=${settings.analysed === 'only' ? 'true' : 'false'}`);
+      }
       // No filter for `result` as that's no in the API and has to be done client side.
 
       const response = await fetch(

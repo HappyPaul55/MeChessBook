@@ -23,7 +23,8 @@ export type Game = {
 export type Settings = {
   pageSize: "A4" | "A5";
   color: "all" | "white" | "black";
-  results: "all" | "wins" | "draws" | "losses";
+  result: "all" | "wins" | "draws" | "losses";
   gameType: string;
   rated: "all" | "rated" | "unrated";
+  analysed: "all" | "only";
 };

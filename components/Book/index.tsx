@@ -208,8 +208,7 @@ export default function Book(
       >
         This book is made up of {props.data.games.length.toLocaleString()}{" "}
         games from{" "}
-        {props.data.user.name}. It includes, wins and losses and everything
-        in-between.
+        {props.data.user.name}.
         <br />
         <br />
         You can make your own at{" "}
