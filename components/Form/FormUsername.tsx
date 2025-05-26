@@ -1,4 +1,5 @@
-import { useForm, SubmitHandler } from "react-hook-form"
+import { useForm, SubmitHandler } from "react-hook-form";
+import useTranslation from 'next-translate/useTranslation';
 
 type Inputs = {
   username: string;
@@ -11,12 +12,13 @@ export default function FormUsername(
     register,
     handleSubmit,
   } = useForm<Inputs>()
-  const onSubmit: SubmitHandler<Inputs> = (data) => props.setUsername(data.username)
+  const onSubmit: SubmitHandler<Inputs> = (data) => props.setUsername(data.username);
+  const { t } = useTranslation("common");
 
   return (
     <>
       <h1 className="text-3xl font-bold text-white mb-6 text-center drop-shadow-md">
-        Me Chess Book
+        {t('project.title')}
       </h1>
       <form
         className="flex flex-col gap-4"
@@ -24,19 +26,19 @@ export default function FormUsername(
       >
         {props.error && (
           <div className="bg-red-600 text-white px-4 py-3 text-sm rounded-lg">
-            Username not valid. Please try another one...
+            {t('form.username.username.invalid')}
           </div>
         )}
         <input
           {...register("username")}
-          placeholder="Lichess Username"
+          placeholder={t('form.username.username.placeholder')}
           className="px-4 py-3 rounded-lg bg-white placeholder-black/30 text-black border border-white/30 focus:outline-none focus:ring-2 focus:ring-white/50 backdrop-blur-md"
         />
         <button
           type="submit"
           className="mt-4 py-3 rounded-lg bg-white text-purple-600 font-semibold hover:bg-purple-100 transition duration-300 cursor-pointer"
         >
-          Let&apos;s Go...
+          {t('form.username.submit')}
         </button>
       </form>
     </>

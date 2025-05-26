@@ -27,4 +27,5 @@ export type Settings = {
   gameType: string;
   rated: "all" | "rated" | "unrated";
   analysed: "all" | "only";
+  dateRange: "all" | "last-month" | "last-year";
 };

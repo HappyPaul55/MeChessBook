@@ -1,4 +1,4 @@
-import { Game as GenericGame } from './types';
+import { Game as GenericGame, Settings } from './types';
 
 export interface User {
   id: string;
@@ -62,7 +62,7 @@ export interface Game {
   status: string;
   source: string;
   players: Players;
-  winner: string;
+  winner: 'black' | 'white' | '';
   moves: string;
   clock: Clock;
   tournament?: string;
@@ -99,7 +99,15 @@ function randomNumberBetween(min: number, max: number): number {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-export default async function processGame(game: Game): Promise<GenericGame | undefined> {
+export default async function processGame(game: Game, username: string, settings: Settings): Promise<GenericGame | undefined> {
+  const color = game.players.black.user.name === username ? 'black' : 'white';
+  if ((settings.result !== 'all' && !['black', 'white'].includes(game.winner))
+    || (settings.result === 'wins' && color !== game.winner)
+    || (settings.result === 'losses' && color === game.winner)
+  ) {
+    // The game did not match the requirement of only showing wins or only losses.
+    return;
+  }
   return {
     id: game.id,
     white: {

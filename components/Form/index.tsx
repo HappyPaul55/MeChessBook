@@ -11,6 +11,7 @@ export default function Form(
     setData: (data: { user: User; games: Game[]; settings: Settings }) => void;
   },
 ) {
+  const setData = props.setData;
   const [error, setError] = useState<undefined | "username">(undefined);
   const [username, setUsername] = useState<string | undefined>(undefined);
   const [user, setUser] = useState<LichessUser | undefined>(undefined);
@@ -71,11 +72,23 @@ export default function Form(
       if (settings.rated !== "all") {
         filters.push(`rated=${settings.rated === "rated" ? "true" : "false"}`);
       }
-      if (settings.gameType !== "all") {
+      if (settings.gameType !== undefined && settings.gameType !== "all") {
         filters.push(`perfType=${settings.gameType}`);
+      } else {
+        filters.push("perfType=ultraBullet,bullet,blitz,rapid,classical,correspondence");
       }
       if (settings.analysed !== "all") {
         filters.push(`analysed=${settings.analysed === 'only' ? 'true' : 'false'}`);
+      }
+
+      if (settings.dateRange === "last-month") {
+        const since = new Date();
+        since.setMonth(since.getMonth() - 1);
+        filters.push(`since=${since.getTime()}`);
+      } else if (settings.dateRange === "last-year") {
+        const since = new Date();
+        since.setFullYear(since.getFullYear() - 1);
+        filters.push(`since=${since.getTime()}`);
       }
       // No filter for `result` as that's no in the API and has to be done client side.
 
@@ -94,29 +107,32 @@ export default function Form(
         const { done, value } = await reader.read();
         if (done) {
           console.log({ games });
-          props.setData({ user: { name: user.username }, games, settings });
+          setData({ user: { name: user.username }, games, settings });
           return;
         }
         const decoder = new TextDecoder("utf-8");
         const chunk = decoder.decode(value, { stream: true });
-        if (chunk) {
-          const lines = chunk.split("\n");
-          for (const line of lines) {
-            if (line) {
-              try {
-                const data = JSON.parse(line) as LichessGame;
-                const result = await processGame(data);
-                if (result) {
-                  // Game will only be added if it's interesting.
-                  games.push(result);
-                }
-              } catch (e) {
-                console.warn(e);
-                console.warn(line);
-              }
-              setLinesProcessed((s) => s + 1);
-            }
+        if (!chunk) {
+          read();
+          return
+        }
+        const lines = chunk.split("\n");
+        for (const line of lines) {
+          if (!line) {
+            continue;
           }
+          try {
+            const data = JSON.parse(line) as LichessGame;
+            const result = await processGame(data, user.username, settings);
+            if (result) {
+              // Game will only be added if it's interesting.
+              games.push(result);
+            }
+          } catch (e) {
+            console.warn(e);
+            console.warn(line);
+          }
+          setLinesProcessed((s) => s + 1);
         }
         read();
       };
@@ -126,7 +142,7 @@ export default function Form(
     getData(settings, user, username);
 
     return () => controller.abort();
-  }, [user, settings]);
+  }, [setData, user, settings, username]);
 
   if (!username || error === "username") {
     return (

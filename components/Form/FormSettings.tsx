@@ -1,6 +1,7 @@
 import { useForm, SubmitHandler, Controller } from "react-hook-form"
 import type { User as LichessUser } from "../../lichess";
 import { Settings } from "../../types";
+import useTranslation from "next-translate/useTranslation";
 
 function Selector<T extends string>(props: {
   setValue: (value: T) => void,
@@ -8,8 +9,10 @@ function Selector<T extends string>(props: {
   title: string,
   options: T[]
 }) {
+  const { t } = useTranslation('common');
+
   return <div className="text-white">
-    <h3 className="text-lg">{props.title}</h3>
+    <h3 className="text-lg">{t(`form.settings.${props.title}.title`)}</h3>
     <div className="row flex w-full gap-4">
       {
         props.options.map(option => <button
@@ -24,7 +27,7 @@ function Selector<T extends string>(props: {
             props.setValue(option)
           }}
         >
-          {option}
+          {t(`form.settings.${props.title}.options.${option}`)}
         </button>)
       }
     </div>
@@ -38,6 +41,7 @@ export default function FormSettings(
     setSettings: (settings: Settings) => void;
   },
 ) {
+  const { t } = useTranslation("common");
   const {
     handleSubmit,
     control,
@@ -48,6 +52,7 @@ export default function FormSettings(
       result: "all",
       rated: "all",
       analysed: "all",
+      dateRange: "last-month",
     }
   })
   const onSubmit: SubmitHandler<Settings> = (data) => props.setSettings(data)
@@ -55,13 +60,12 @@ export default function FormSettings(
   return (
     <>
       <h1 className="text-3xl font-bold text-white mb-6 text-center drop-shadow-lg">
-        Book Settings...
+        {t('form.settings.title')}
       </h1>
       <form
         className="flex flex-col gap-4"
         onSubmit={handleSubmit(onSubmit)}
       >
-
         <Controller
           name="analysed"
           control={control}
@@ -127,16 +131,17 @@ export default function FormSettings(
           )}
         />
         <details>
-          <summary className="text-white">Show Advanced Settings... </summary>
+          <summary className="text-white cursor-pointer">Show Advanced Settings... </summary>
           <div className="mt-4">
+
             <Controller
-              name="pageSize"
+              name="dateRange"
               control={control}
               render={({ field }) => (
                 <Selector
                   value={field.value}
                   title={field.name}
-                  options={["A4", "A5"]}
+                  options={["all", "last-month", "last-year"]}
                   setValue={field.onChange}
                 />
               )}
@@ -147,7 +152,7 @@ export default function FormSettings(
           type="submit"
           className="mt-4 py-3 rounded-lg bg-white text-purple-600 font-semibold hover:bg-purple-100 transition duration-300 cursor-pointer"
         >
-          Let&apos;s Go...
+          {t('form.settings.submit')}
         </button>
       </form>
     </>

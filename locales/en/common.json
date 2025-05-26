@@ -1,1 +1,63 @@
-{}
+{
+  "project": {
+    "title": "Me Chess Book"
+  },
+  "form": {
+    "username": {
+      "submit": "Next...",
+      "username": {
+        "invalid": "Username not valid. Please try another one...",
+        "placeholder": "Lichess Username"
+      }
+    },
+    "settings": {
+      "submit": "Create Me Book",
+      "title": "Book Settings",
+      "analysed": {
+        "title": "Analysis",
+        "options": {
+          "all": "With or Without",
+          "only": "With only"
+        }
+      },
+      "result": {
+        "title": "End Result",
+        "options": {
+          "wins": "Wins",
+          "all": "All",
+          "losses": "Losses"
+        }
+      },
+      "rated": {
+        "title": "Rated",
+        "options": {
+          "rated": "Rated",
+          "all": "All"
+        }
+      },
+      "color": {
+        "title": "Colour",
+        "options": {
+          "white": "White",
+          "all": "All",
+          "black": "Black"
+        }
+      },
+      "pageSize": {
+        "title": "Page Size",
+        "options": {
+          "A4": "A4",
+          "A5": "A5"
+        }
+      },
+      "dateRange": {
+        "title": "Games Played Since",
+        "options": {
+          "all": "All Time",
+          "last-month": "Last Month",
+          "last-year": "Last Year"
+        }
+      }
+    }
+  }
+}

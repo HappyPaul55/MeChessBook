@@ -14,12 +14,14 @@ const columns = [
 
 export default function ChessBoard(props: { game: Game, className?: string }) {
   const chess = new Chess();
-  chess.loadPgn(props.game.board.pgn);
-  while (chess.moveNumber() > 1 && (chess.moveNumber() - 1) * 2 + Number(chess.turn() === 'b') > props.game.board.ply) {
-    chess.undo();
+  try {
+    chess.loadPgn(props.game.board.pgn);
+    while (chess.moveNumber() > 1 && (chess.moveNumber() - 1) * 2 + Number(chess.turn() === 'b') > props.game.board.ply) {
+      chess.undo();
+    }
+  } catch (e) {
+    console.log("Invalid game: " + props.game.id)
   }
-
-  console.log(chess.moves())
 
   const board = [...chess.board()];
 
@@ -43,10 +45,11 @@ export default function ChessBoard(props: { game: Game, className?: string }) {
             >
               {board[row][col]?.type
                 ? (
+                  // eslint-disable-next-line
                   <img
                     src={`/pieces/${board[row][col]?.color === "w" ? "white" : "black"
                       }/${board[row][col]?.type.toUpperCase()}.svg`}
-                    className={`block m-auto w-full h-full`}
+                    className="block m-auto w-full h-full"
                   />
                 )
                 : <div className="w-full aspect-square" />}
