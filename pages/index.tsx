@@ -17,6 +17,7 @@ export default function HomePage() {
         </div>
 
         <Head>
+          <title>Me Chess Book</title>
           <style>
             {`
               @keyframes gradient {
