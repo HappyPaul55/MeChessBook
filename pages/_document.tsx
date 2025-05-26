@@ -30,11 +30,24 @@ export default function Document() {
                 <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
                 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
                 <link rel="manifest" href="/manifest.json" />
-                <meta name="msapplication-TileColor" content="#ffffff" />
+                <meta name="msapplication-TileColor" content="#efefef" />
                 <meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
                 <meta name="theme-color" content="#efefef" />
+                <meta name="application-name" content="Me Chess Book" />
+                <meta name="generator" content="Super Dooper Book Maker" />
+                <meta name="rating" content="General" />
+                <meta name="format-detection" content="telephone=no" />
+                <link rel="me" href="https://www.linkedin.com/in/happypaul55/" type="text/html" />
+                <meta property="og:type" content="website" />
+                <meta property="og:title" content="Me Chess Book" />
+                <meta property="og:description" content="Create a Chess Book from your Lichess games" />
+                <meta property="og:site_name" content="Me Chess Book" />
+                <meta property="og:locale" content="en_GB" />
+                <meta property="article:author" content="Paul Happy Hutchinson" />
+                <meta http-equiv="x-ua-compatible" content="ie=edge" />
+                <meta name="msapplication-config" content="/browserconfig.xml" />
             </Head>
-            <body className="bg-gray-200 print:bg-none ">
+            <body className="bg-gray-200 print:bg-none">
                 <Main />
                 <NextScript />
             </body>
