@@ -47,7 +47,7 @@ export default function FormSettings(
     control,
   } = useForm<Settings>({
     defaultValues: {
-      pageSize: "A4",
+      pageSize: "A5",
       color: "all",
       result: "all",
       rated: "all",

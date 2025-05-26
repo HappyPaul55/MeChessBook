@@ -70,8 +70,8 @@ export default function Book(
         <div className="px-20 m-auto text-center">
           <p className="mb-10">
             Created By MeChessBook{" "}
-            <a className="underline" href="https://www.mechessbook.com">
-              www.mechessbook.com
+            <a className="underline" href="https://me-chess-book.vercel.app/">
+              me-chess-book.vercel.app
             </a>
           </p>
 
@@ -212,7 +212,7 @@ export default function Book(
         <br />
         <br />
         You can make your own at{" "}
-        <a href="https://MeChessBook.com">MeChessBook.com</a>.
+        <a href="https://me-chess-book.vercel.app/">me-chess-book.vercel.app</a>.
       </p>
     </CoverPage>,
   );
@@ -232,6 +232,7 @@ export default function Book(
           @page {
             size: ${props.data.settings.pageSize} portrait;
             margin: 0;
+            padding: 0;
           }
         `}
         </style>
