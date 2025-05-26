@@ -16,6 +16,85 @@ function stringToNumber(input: string, min: number, max: number) {
   return (hash % max) + min;
 }
 
+type ChessPage = {
+  type: 'one',
+  games: [Game],
+} | {
+  type: 'three',
+  games: [Game, Game, Game | undefined],
+} | {
+  type: 'four',
+  games: [Game, Game, Game, Game],
+} | {
+  type: 'six',
+  games: [Game, Game, Game, Game, Game | undefined, Game | undefined],
+}
+
+function convertGamesToPages(settings: Settings, games: Game[]): ChessPage[] {
+  const result: ChessPage[] = [];
+
+  function scoreGame(game: Game): number {
+    return game.black.rating * 100
+      + game.white.rating * 100
+      - (Number(game.black.ratingProvisional) * 1)
+      - (Number(game.white.ratingProvisional) * 1);
+  }
+  const gamesSortedByStrength = games.sort((a, b) => {
+    const aScore = scoreGame(a);
+    const bScore = scoreGame(b);
+
+    if (aScore === bScore) {
+      return 0;
+    }
+
+    return aScore > bScore ? -1 : 1;
+  });
+
+  // Best Game gets a full page
+  if (gamesSortedByStrength[0]) {
+    result.push({
+      type: 'one',
+      games: [gamesSortedByStrength[0]]
+    });
+  }
+
+  const batch: Game[] = [];
+  for (let i = 1; i < gamesSortedByStrength.length; i++) {
+    batch.push(gamesSortedByStrength[i]);
+
+    // @todo: Highlight games without any blunders/mistakes.
+    // @todo: Maybe highlight games that are full of blunders.
+
+    if (batch.length < 4 && (i > gamesSortedByStrength.length * 0.33 || settings.pageSize === 'A5')) {
+      if (batch.length === 3) {
+        result.push({
+          type: 'three',
+          games: [...batch] as [Game, Game, Game],
+        });
+        batch.length = 0;
+        continue;
+      }
+    } else {
+      if (batch.length === 6) {
+        result.push({
+          type: 'six',
+          games: [...batch] as [Game, Game, Game, Game, Game, Game],
+        });
+        batch.length = 0;
+        continue;
+      }
+    }
+  }
+
+  // No more games to add to batch, what was left over in the batching?
+  if (batch.length === 1) result.push({ type: 'one', games: [...batch] as [Game] });
+  if (batch.length === 2 || batch.length === 3) result.push({ type: 'three', games: [...batch] as [Game, Game, Game | undefined] });
+  if (batch.length > 3) result.push({ type: 'six', games: [...batch] as any });
+  batch.length = 0;
+
+  return result;
+}
+
 export default function Book(
   props: { data: { user: User; games: Game[]; settings: Settings } },
 ) {
@@ -108,70 +187,57 @@ export default function Book(
     </ContentPage>,
   );
 
-  const batch: Game[] = [];
-  console.log({ activePage });
-  for (const game of props.data.games) {
-    if (game.id.substring(0, 1).includes("A")) {
-      // Game is important.
-      // Show it solo.
-      pages.push(
-        <OneGamePage
-          key={game.id}
-          pageNumber={pages.length}
-          game={game}
-          settings={props.data.settings}
-          className={activePage > pages.length ? "turned" : ""}
-          onClick={pageClickHandler}
-        />,
-      );
-
-      continue;
-    }
-
-    // Add the game to the batch.
-    batch.push(game);
-    if (
-      props.data.settings.pageSize === "A4" && (
-        batch.length === 6 ||
-        game.id === props.data.games[props.data.games.length - 1].id
-      )
-    ) {
-      // Batch is full, make a page.
-      pages.push(
-        <SixGamePage
-          key={batch.map((game) => game.id).join("-")}
-          pageNumber={pages.length}
-          games={[...batch]}
-          settings={props.data.settings}
-          className={activePage > pages.length ? "turned" : ""}
-          onClick={pageClickHandler}
-        />,
-      );
-
-      batch.length = 0;
-      continue;
-    }
-
-    if (
-      false && (
-        batch.length === 3 ||
-        game.id === props.data.games[props.data.games.length - 1].id
-      )
-    ) {
-      // Batch is full, make a page.
+  const gamePages = convertGamesToPages(props.data.settings, props.data.games);
+  console.log({ gamePages })
+  for (const gamePage of gamePages) {
+    if (gamePage.type === 'one') {
+      const game = gamePage.games[0];
+      pages.push(<OneGamePage
+        key={game.id}
+        pageNumber={pages.length}
+        game={game}
+        settings={props.data.settings}
+        className={activePage > pages.length ? "turned" : ""}
+        onClick={pageClickHandler}
+      />);
+    } else if (gamePage.type === 'three') {
       pages.push(
         <ThreeGamePage
-          key={batch.map((game) => game.id).join("-")}
+          key={gamePage.games.map((game) => game?.id ?? '0').join("-")}
           pageNumber={pages.length}
-          games={[...batch]}
+          games={gamePage.games.filter((game): game is Game => {
+            return game !== undefined;
+          })}
           settings={props.data.settings}
           className={activePage > pages.length ? "turned" : ""}
           onClick={pageClickHandler}
-        />,
+        />
       );
-
-      batch.length = 0;
-      continue;
+    } else if (gamePage.type === 'four') {
+      // @todo: Four Game Page
+      // pages.push(
+      //   <FourGamePage
+      //     key={gamePage.games.map((game) => game.id).join("-")}
+      //     pageNumber={pages.length}
+      //     games={gamePage.games}
+      //     settings={props.data.settings}
+      //     className={activePage > pages.length ? "turned" : ""}
+      //     onClick={pageClickHandler}
+      //   />
+      // );
+    } else if (gamePage.type === 'six') {
+      pages.push(
+        <SixGamePage
+          key={gamePage.games.map((game) => game?.id ?? '0').join("-")}
+          pageNumber={pages.length}
+          games={gamePage.games.filter((game): game is Game => {
+            return game !== undefined;
+          })}
+          settings={props.data.settings}
+          className={activePage > pages.length ? "turned" : ""}
+          onClick={pageClickHandler}
+        />
+      );
     }
   }
 

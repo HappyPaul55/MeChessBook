@@ -2,6 +2,10 @@
   "project": {
     "title": "Me Chess Book"
   },
+  "button": {
+    "print": "Print",
+    "reset": "Reset"
+  },
   "form": {
     "username": {
       "submit": "Next...",

@@ -103,18 +103,16 @@ export default function Form(
       );
       const reader = response.body!.getReader();
       const games: Game[] = [];
-      const read = async () => {
+      while (true) {
         const { done, value } = await reader.read();
         if (done) {
-          console.log({ games });
-          setData({ user: { name: user.username }, games, settings });
-          return;
+          setData({ user: { name: user.username, rating: 1500, ratingProvisional: true }, games, settings });
+          break;
         }
         const decoder = new TextDecoder("utf-8");
         const chunk = decoder.decode(value, { stream: true });
         if (!chunk) {
-          read();
-          return
+          continue;
         }
         const lines = chunk.split("\n");
         for (const line of lines) {
@@ -134,9 +132,7 @@ export default function Form(
           }
           setLinesProcessed((s) => s + 1);
         }
-        read();
       };
-      read();
     }
 
     getData(settings, user, username);

@@ -1,7 +1,7 @@
 export type User = {
   name: string,
-  rating?: number,
-  ratingProvisional?: boolean
+  rating: number,
+  ratingProvisional: boolean
   title?: string,
 };
 

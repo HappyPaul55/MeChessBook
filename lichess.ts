@@ -106,6 +106,7 @@ export default async function processGame(game: Game, username: string, settings
     || (settings.result === 'losses' && color === game.winner)
   ) {
     // The game did not match the requirement of only showing wins or only losses.
+    console.log("filtering out " + game.id)
     return;
   }
   return {
@@ -113,12 +114,12 @@ export default async function processGame(game: Game, username: string, settings
     white: {
       name: game.players.white.user.name,
       rating: game.players.white.rating,
-      ratingProvisional: game.players.white.provisional,
+      ratingProvisional: game.players.white.provisional === true,
     },
     black: {
       name: game.players.black.user.name,
       rating: game.players.black.rating,
-      ratingProvisional: game.players.black.provisional,
+      ratingProvisional: game.players.black.provisional === true,
     },
     moves: game.moves,
     board: {
