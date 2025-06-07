@@ -59,7 +59,7 @@ export default function ChessBoard(props: { game: Game, className?: string }) {
       </div>
       <div className={`${props.className ?? ''} absolute top-full left-0 right-0 aspect-none grid grid-cols-8 col-span-8`}>
         {(new Array(8).fill(true)).map((_, i) => {
-          return <div key={i} className="text-center h-0">{chess.turn() === 'b' ? columns[7 - i] : chess.turn() === 'b'}</div>;
+          return <div key={i} className="text-center h-0">{chess.turn() === 'b' ? columns[7 - i] : columns[i]}</div>;
         })}
       </div>
       <div className={`${props.className ?? ''} absolute top-0 -left-4 bottom-0 aspect-none grid grid-cols-1 col-span-8`}>
