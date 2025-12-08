@@ -1,7 +1,6 @@
-import { Fragment } from "react";
 import { Game } from "../../types";
 import ChessBoard from "../Chess/ChessBoard";
-import { type PageProps } from "./page";
+import { type PageProps } from "./Page";
 import GameTitle from "../GameTitle";
 import ContentPage from "./ContentPage";
 import MoveListTable from "../Chess/MoveListTable";

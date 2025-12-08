@@ -1,4 +1,5 @@
 import { Game as GenericGame, Settings } from './types';
+import { Chess } from "chess.js";
 
 export interface User {
   id: string;
@@ -67,6 +68,15 @@ export interface Game {
   clock: Clock;
   tournament?: string;
   pgn: string;
+  analysis?: {
+    eval: number,
+    best?: string,
+    variation?: string,
+    judgment?: {
+      name: string,
+      comment: string,
+    },
+  }[]
 }
 
 export interface Players {
@@ -96,19 +106,88 @@ export interface Clock {
 }
 
 function randomNumberBetween(min: number, max: number): number {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
+  // Box-Muller transform for normal distribution
+  const mean = (min + max) / 2;
+  const stddev = (max - min) / 6; // ~99.7% within [min, max]
+  let val;
+  do {
+    const u = 1 - Math.random();
+    const v = Math.random();
+    val = Math.round(mean + stddev * Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v));
+  } while (val < min || val > max);
+  return val;
 }
 
-export default async function processGame(game: Game, username: string, settings: Settings): Promise<GenericGame | undefined> {
+const judgementMap = {
+  mistake: '?',
+  blunder: '??',
+  inaccuracy: '?!',
+} as const;
+
+export default function processGame(game: Game, username: string, settings: Settings): GenericGame | undefined {
+  // No AI games.
+  if (game.source === 'ai') {
+    return undefined;
+  }
+
+  // No variants other than standard chess.
+  if (game.variant !== 'standard') {
+    return undefined;
+  }
+
+  // Filter by result if needed.
   const color = game.players.black.user.name === username ? 'black' : 'white';
   if ((settings.result !== 'all' && !['black', 'white'].includes(game.winner))
     || (settings.result === 'wins' && color !== game.winner)
     || (settings.result === 'losses' && color === game.winner)
   ) {
     // The game did not match the requirement of only showing wins or only losses.
-    console.log("filtering out " + game.id)
-    return;
+    console.debug("filtering out " + game.id)
+    return undefined;
   }
+
+  if ((game.pgn ?? '').trim() === '') {
+    throw new Error("Game has no PGN: " + game.id);
+  }
+
+  const moves = game.moves.split(" ");
+  const movesCount = moves.length;
+  let positionDelta = 0;
+  let biggestDelta = 0;
+  let biggestDeltaPly = -1;
+  for (let i = 0; i < (game.analysis?.length ?? 0); i++) {
+    const analysis = game.analysis![i]!;
+    const name = analysis.judgment?.name.toLowerCase() as keyof typeof judgementMap | undefined;
+    const delta = Math.abs(analysis.eval - positionDelta);
+    if (name !== undefined) {
+      moves[i] += judgementMap[name];
+    }
+
+    if (delta > biggestDelta) {
+      // If it's a blunder, always pick that.
+      biggestDelta = name === 'blunder' ? Infinity : delta;
+      biggestDeltaPly = i;
+    }
+
+    positionDelta = analysis.eval;
+  }
+  const plyOfInterest = biggestDeltaPly !== -1
+    ? biggestDeltaPly
+    : randomNumberBetween(Math.max(0, Math.min(movesCount - 2, 3)), movesCount)
+
+  const chess = new Chess(undefined, { skipValidation: true });
+  chess.loadPgn(game.pgn);
+  const turn = chess.turn();
+  while (chess.moveNumber() > 1 && (chess.moveNumber() - 1) * 2 + Number(turn === 'b') > plyOfInterest) {
+    chess.undo();
+  }
+
+  const board = chess.board();
+  if (turn === 'b') {
+    board.reverse();
+    board.map(row => row.reverse());
+  }
+
   return {
     id: game.id,
     white: {
@@ -121,10 +200,18 @@ export default async function processGame(game: Game, username: string, settings
       rating: game.players.black.rating,
       ratingProvisional: game.players.black.provisional === true,
     },
-    moves: game.moves,
+    moves: moves.join(" "),
+    movesCount,
     board: {
-      pgn: game.pgn,
-      ply: randomNumberBetween(1, game.moves.split(" ").length),
-    }
+      grid: board,
+      ply: plyOfInterest - 1,
+      turn,
+    },
+    analysis: game.analysis?.map(entry => ({
+      eval: entry.eval,
+      type: entry.judgment?.name
+        ? (entry.judgment.name.toLowerCase() as 'mistake' /** ? */ | 'blunder' /** ?? */ | 'inaccuracy' /** ?! */)
+        : undefined
+    })),
   };
 }
