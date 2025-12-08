@@ -1,4 +1,4 @@
-import Page, { PageProps } from "./page";
+import Page, { PageProps } from "./Page";
 
 export default function CoverPage(
   props: PageProps,

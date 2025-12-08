@@ -1,5 +1,7 @@
 import { Fragment } from "react";
 
+const highlightedStyle = "outline-2 bg-black text-white outline-black";
+
 export default function MoveListInline(props: { moves: string[], highlightedPly: number, size: string }) {
   const pairs: [string, string?][] = [];
 
@@ -17,9 +19,9 @@ export default function MoveListInline(props: { moves: string[], highlightedPly:
         <span className="whitespace-nowrap">
           <span className="text-gray-400 font-anton">{i + 1}</span>
           &nbsp;
-          {moves[0]}
+          {i * 2 === props.highlightedPly ? <span className={highlightedStyle}>{moves[0]}</span> : moves[0]}
           &nbsp;
-          {moves[1]}.
+          {i * 2 + 1 === props.highlightedPly ? <span className={highlightedStyle}>{moves[1]}</span> : moves[1]}.
         </span>
         {" "}
       </Fragment>

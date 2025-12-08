@@ -1,3 +1,19 @@
+import { Color, PieceSymbol, Square } from "chess.js";
+
+export type ChessPage = {
+  type: 'one',
+  games: [Game],
+} | {
+  type: 'three',
+  games: [Game, Game, Game | undefined],
+} | {
+  type: 'four',
+  games: [Game, Game, Game, Game],
+} | {
+  type: 'six',
+  games: [Game, Game, Game, Game, Game | undefined, Game | undefined],
+}
+
 export type User = {
   name: string,
   rating: number,
@@ -10,14 +26,20 @@ export type Game = {
   white: User,
   black: User,
   board: {
-    pgn: string,
+    grid: ({
+      square: Square;
+      type: PieceSymbol;
+      color: Color;
+    } | null)[][],
     ply: number,
+    turn: Color,
   },
   moves: string,
+  movesCount: number,
   analysis?: {
     eval: number,
-    type: 'mistake' /** ? */ | 'blunder' /** ?? */ | 'inaccuracy' /** ?! */
-  }
+    type?: 'mistake' /** ? */ | 'blunder' /** ?? */ | 'inaccuracy' /** ?! */
+  }[]
 };
 
 export type Settings = {

@@ -21,8 +21,8 @@ export default function MoveListTable(props: { moves: string[], highlightedPly: 
             <td className="text-gray-400 w-6 font-anton">
               {i + 1}
             </td>
-            <td><span className={i * 2 == props.highlightedPly - 1 ? highlightedStyle : ''}>{moves[0]}</span></td>
-            <td><span className={i * 2 + 1 === props.highlightedPly - 1 ? highlightedStyle : ''}>{moves[1]}</span></td>
+            <td><span className={i * 2 == props.highlightedPly ? highlightedStyle : ''}>{moves[0]}</span></td>
+            <td><span className={i * 2 + 1 === props.highlightedPly ? highlightedStyle : ''}>{moves[1]}</span></td>
           </tr>
         ))}
       </tbody>

@@ -2,104 +2,19 @@ import { ReactNode, useCallback, useId, useState } from "react";
 import type { Game, Settings, User } from "../../types";
 import OneGamePage from "./OneGamePage";
 import ThreeGamePage from "./ThreeGamePage";
-import Page from "./page";
+import Page from "./Page";
 import Head from "next/head";
 import ContentPage from "./ContentPage";
 import CoverPage from "./CoverPage";
 import SixGamePage from "./SixGamePage";
-
-function stringToNumber(input: string, min: number, max: number) {
-  let hash = 0;
-  for (let i = 0; i < input.length; i++) {
-    hash = (hash * 31 + input.charCodeAt(i)) >>> 0;
-  }
-  return (hash % max) + min;
-}
-
-type ChessPage = {
-  type: 'one',
-  games: [Game],
-} | {
-  type: 'three',
-  games: [Game, Game, Game | undefined],
-} | {
-  type: 'four',
-  games: [Game, Game, Game, Game],
-} | {
-  type: 'six',
-  games: [Game, Game, Game, Game, Game | undefined, Game | undefined],
-}
-
-function convertGamesToPages(settings: Settings, games: Game[]): ChessPage[] {
-  const result: ChessPage[] = [];
-
-  function scoreGame(game: Game): number {
-    return game.black.rating * 100
-      + game.white.rating * 100
-      - (Number(game.black.ratingProvisional) * 1)
-      - (Number(game.white.ratingProvisional) * 1);
-  }
-  const gamesSortedByStrength = games.sort((a, b) => {
-    const aScore = scoreGame(a);
-    const bScore = scoreGame(b);
-
-    if (aScore === bScore) {
-      return 0;
-    }
-
-    return aScore > bScore ? -1 : 1;
-  });
-
-  // Best Game gets a full page
-  if (gamesSortedByStrength[0]) {
-    result.push({
-      type: 'one',
-      games: [gamesSortedByStrength[0]]
-    });
-  }
-
-  const batch: Game[] = [];
-  for (let i = 1; i < gamesSortedByStrength.length; i++) {
-    batch.push(gamesSortedByStrength[i]);
-
-    // @todo: Highlight games without any blunders/mistakes.
-    // @todo: Maybe highlight games that are full of blunders.
-
-    if (batch.length < 4 && (i > gamesSortedByStrength.length * 0.33 || settings.pageSize === 'A5')) {
-      if (batch.length === 3) {
-        result.push({
-          type: 'three',
-          games: [...batch] as [Game, Game, Game],
-        });
-        batch.length = 0;
-        continue;
-      }
-    } else {
-      if (batch.length === 6) {
-        result.push({
-          type: 'six',
-          games: [...batch] as [Game, Game, Game, Game, Game, Game],
-        });
-        batch.length = 0;
-        continue;
-      }
-    }
-  }
-
-  // No more games to add to batch, what was left over in the batching?
-  if (batch.length === 1) result.push({ type: 'one', games: [...batch] as [Game] });
-  if (batch.length === 2 || batch.length === 3) result.push({ type: 'three', games: [...batch] as [Game, Game, Game | undefined] });
-  if (batch.length > 3) result.push({ type: 'six', games: [...batch] as any });
-  batch.length = 0;
-
-  return result;
-}
+import stringToSemiRandomNumber from "../../utils/stringToNumber";
+import convertGamesToPages from "../../utils/convertGamesToPages";
 
 export default function Book(
   props: { data: { user: User; games: Game[]; settings: Settings } },
 ) {
   const [activePage, setActivePage] = useState<number>(0);
-  const cover = stringToNumber(useId(), 1, 9);
+  const cover = stringToSemiRandomNumber(useId(), 1, 9);
 
   const pageClickHandler = useCallback((pageNumber: number) => {
     if (pageNumber < 0) {
@@ -188,7 +103,6 @@ export default function Book(
   );
 
   const gamePages = convertGamesToPages(props.data.settings, props.data.games);
-  console.log({ gamePages })
   for (const gamePage of gamePages) {
     if (gamePage.type === 'one') {
       const game = gamePage.games[0];
@@ -213,18 +127,6 @@ export default function Book(
           onClick={pageClickHandler}
         />
       );
-    } else if (gamePage.type === 'four') {
-      // @todo: Four Game Page
-      // pages.push(
-      //   <FourGamePage
-      //     key={gamePage.games.map((game) => game.id).join("-")}
-      //     pageNumber={pages.length}
-      //     games={gamePage.games}
-      //     settings={props.data.settings}
-      //     className={activePage > pages.length ? "turned" : ""}
-      //     onClick={pageClickHandler}
-      //   />
-      // );
     } else if (gamePage.type === 'six') {
       pages.push(
         <SixGamePage

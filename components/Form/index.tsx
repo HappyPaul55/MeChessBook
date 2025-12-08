@@ -121,7 +121,7 @@ export default function Form(
           }
           try {
             const data = JSON.parse(line) as LichessGame;
-            const result = await processGame(data, user.username, settings);
+            const result = processGame(data, user.username, settings);
             if (result) {
               // Game will only be added if it's interesting.
               games.push(result);
