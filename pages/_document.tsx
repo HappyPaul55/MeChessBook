@@ -44,7 +44,7 @@ export default function Document() {
                 <meta property="og:site_name" content="Me Chess Book" />
                 <meta property="og:locale" content="en_GB" />
                 <meta property="article:author" content="Paul Happy Hutchinson" />
-                <meta http-equiv="x-ua-compatible" content="ie=edge" />
+                <meta httpEquiv="x-ua-compatible" content="ie=edge" />
                 <meta name="msapplication-config" content="/browserconfig.xml" />
             </Head>
             <body className="bg-gray-200 print:bg-none">
