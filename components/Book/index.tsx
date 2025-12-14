@@ -251,34 +251,36 @@ export default function Book(
   );
 
   // Spine
-  pages.push(
-    <CoverPage
-      key="spine"
-      settings={props.data.settings}
-      className={activePage > pages.length ? "turned" : ""}
-      onClick={pageClickHandler}
-      pageNumber={-pages.length}
-    >
-      <div
-        className="absolute inset-0 bg-cover bg-middle z-0"
-        style={{
-          backgroundImage: `url(/covers/10.png?${cover}.jpg)`,
-        }}
-      />
+  // pages.push(
+  //   <CoverPage
+  //     key="spine"
+  //     settings={props.data.settings}
+  //     className={activePage > pages.length ? "turned" : ""}
+  //     onClick={pageClickHandler}
+  //     pageNumber={-pages.length}
+  //   >
+  //     <div>
+  //       <div
+  //         className="absolute inset-0 bg-cover bg-middle z-0"
+  //         style={{
+  //           backgroundImage: `url(/covers/${cover}.jpg)`,
+  //         }}
+  //       />
 
-      <div className="absolute inset-0 z-5 pointer-events-none shadow-[inset_0_0_40px_20px_rgba(0,0,0,0.3)]" />
+  //       <div className="absolute inset-0 z-5 pointer-events-none shadow-[inset_0_0_40px_20px_rgba(0,0,0,0.3)]" />
 
-      <h1
-        className="absolute top-1/2 -mt-7 left-0 right-10 z-10 text-center text-4xl font-bold text-white font-[Anton] tracking-[0.075em] text-shadow-lg text-shadow-black"
-        style={{ zoom: props.data.settings.pageSize === "A5" ? 1 : 1.5 }}
-      >
-        <div className="text-6xl">The {props.data.user.name} Chess Book</div>
-      </h1>
-      <div className="font-[Anton] text-shadow-lg text-shadow-black text-6xl text-white absolute right-10 pr-0 top-1/2 -translate-y-1/2 text-8xl -rotate-90 origin-center pr-[12px]">
-        ♞
-      </div>
-    </CoverPage>,
-  );
+  //       <h1
+  //         className="absolute top-1/2 -mt-7 left-0 right-10 z-10 text-center text-4xl font-bold text-white font-[Anton] tracking-[0.075em] text-shadow-lg text-shadow-black"
+  //         style={{ zoom: props.data.settings.pageSize === "A5" ? 1 : 1.5 }}
+  //       >
+  //         <div className="text-6xl">The {props.data.user.name} Chess Book</div>
+  //       </h1>
+  //       <div className="font-[Anton] text-shadow-lg text-shadow-black text-6xl text-white absolute right-10 pr-0 top-1/2 -translate-y-1/2 text-8xl -rotate-90 origin-center pr-[12px]">
+  //         ♞
+  //       </div>
+  //     </div>
+  //   </CoverPage>,
+  // );
 
   console.log({ allPages: pages.length });
 
