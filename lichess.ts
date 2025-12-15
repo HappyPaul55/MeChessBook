@@ -177,13 +177,13 @@ export default function processGame(game: Game, username: string, settings: Sett
 
   const chess = new Chess(undefined, { skipValidation: true });
   chess.loadPgn(game.pgn);
-  const turn = chess.turn();
-  while (chess.moveNumber() > 1 && (chess.moveNumber() - 1) * 2 + Number(turn === 'b') > plyOfInterest) {
+  while (chess.moveNumber() > 1
+    && (chess.moveNumber() - 1) * 2 + Number(chess.turn() === 'b') > plyOfInterest) {
     chess.undo();
   }
 
   const board = chess.board();
-  if (turn === 'b') {
+  if (chess.turn() === 'b') {
     board.reverse();
     board.map(row => row.reverse());
   }
@@ -205,7 +205,7 @@ export default function processGame(game: Game, username: string, settings: Sett
     board: {
       grid: board,
       ply: plyOfInterest - 1,
-      turn,
+      turn: chess.turn(),
     },
     analysis: game.analysis?.map(entry => ({
       eval: entry.eval,
