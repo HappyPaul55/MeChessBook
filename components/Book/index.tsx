@@ -102,6 +102,53 @@ export default function Book(
     </ContentPage>,
   );
 
+  // Stat Page.
+  pages.push(
+    <ContentPage
+      key="stat-page"
+      settings={props.data.settings}
+      className={activePage > pages.length ? "turned" : ""}
+      onClick={pageClickHandler}
+      pageNumber={pages.length}
+    >
+      <div
+        className="pt-30 text-center text-2xl"
+        style={{ zoom: props.data.settings.pageSize === "A5" ? 1 : 1.5 }}
+      >
+        <h1 className="font-[Anton] text-4xl pb-12">Stats</h1>
+        <table className="mx-auto text-left">
+          <tbody>
+            <tr>
+              <th className="p-2 font-normal text-right">Games:</th>
+              <td className="font-[Anton]">{props.data.games.length.toLocaleString()}</td>
+            </tr>
+            <tr>
+              <th className="p-2 font-normal text-right">Players:</th>
+              <td className="font-[Anton]">
+                {Array.from(new Set(props.data.games.flatMap(game => [game.white.name, game.black.name]))).length.toLocaleString()}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div className="flex flex-col items-center justify-center mt-16 space-y-4">
+          <div className="flex items-center justify-center space-x-6">
+            <h2 className="font-[Anton] text-4xl">The best game</h2>
+            <span
+              className="text-[6rem] font-black leading-none"
+              aria-label="arrow right"
+            >
+              ➠
+            </span>
+          </div>
+          <p className="text-sm italic opacity-80">
+            Based on the highest ELO of both players combined.
+          </p>
+        </div>
+      </div>
+    </ContentPage>,
+  );
+
   const gamePages = convertGamesToPages(props.data.settings, props.data.games);
   for (const gamePage of gamePages) {
     if (gamePage.type === 'one') {
@@ -143,6 +190,23 @@ export default function Book(
     }
   }
 
+  // Notes
+  for (let i = 0; i < 2; i++) {
+    pages.push(
+      <ContentPage
+        key="notes"
+        pageNumber={pages.length}
+        settings={props.data.settings}
+        className={activePage > pages.length ? "turned" : ""}
+        onClick={pageClickHandler}
+      >
+        <div className="px-20 m-auto text-center font-[Anton] text-4xl">
+          Notes
+        </div>
+      </ContentPage>,
+    );
+  }
+
   if (pages.length % 2 === 0) {
     pages.push(
       <Page
@@ -155,6 +219,7 @@ export default function Book(
     );
   }
 
+  // Back cover.
   pages.push(
     <CoverPage
       key="back-cover"
@@ -184,6 +249,40 @@ export default function Book(
       </p>
     </CoverPage>,
   );
+
+  // Spine
+  // pages.push(
+  //   <CoverPage
+  //     key="spine"
+  //     settings={props.data.settings}
+  //     className={activePage > pages.length ? "turned" : ""}
+  //     onClick={pageClickHandler}
+  //     pageNumber={-pages.length}
+  //   >
+  //     <div>
+  //       <div
+  //         className="absolute inset-0 bg-cover bg-middle z-0"
+  //         style={{
+  //           backgroundImage: `url(/covers/${cover}.jpg)`,
+  //         }}
+  //       />
+
+  //       <div className="absolute inset-0 z-5 pointer-events-none shadow-[inset_0_0_40px_20px_rgba(0,0,0,0.3)]" />
+
+  //       <h1
+  //         className="absolute top-1/2 -mt-7 left-0 right-10 z-10 text-center text-4xl font-bold text-white font-[Anton] tracking-[0.075em] text-shadow-lg text-shadow-black"
+  //         style={{ zoom: props.data.settings.pageSize === "A5" ? 1 : 1.5 }}
+  //       >
+  //         <div className="text-6xl">The {props.data.user.name} Chess Book</div>
+  //       </h1>
+  //       <div className="font-[Anton] text-shadow-lg text-shadow-black text-6xl text-white absolute right-10 pr-0 top-1/2 -translate-y-1/2 text-8xl -rotate-90 origin-center pr-[12px]">
+  //         ♞
+  //       </div>
+  //     </div>
+  //   </CoverPage>,
+  // );
+
+  console.log({ allPages: pages.length });
 
   return (
     <div

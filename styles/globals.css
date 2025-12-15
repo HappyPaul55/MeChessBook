@@ -93,7 +93,9 @@ body {
 }
 
 .chessboard {
-    -webkit-print-color-adjust: exact;
+    background: url(/pieces/background.png?2) top left repeat;
+
+    /* -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
     color-adjust: exact;
 
@@ -103,7 +105,7 @@ body {
         white 2px,
         var(--color-gray-400) 2px,
         var(--color-gray-400) 4px
-    );
+    ); */
 }
 
 

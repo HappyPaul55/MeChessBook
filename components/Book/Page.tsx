@@ -19,11 +19,9 @@ export default function Page(
 ) {
   return (
     <div
-      className={`overflow-hidden relative bg-white print:bg-none rounded-lg print:rounded-none ${
-        props.className ?? ""
-      } ${styles[props.settings.pageSize]}  ${
-        props.onClick && "cursor-pointer"
-      }`}
+      className={`overflow-hidden relative bg-white print:bg-none rounded-lg print:rounded-none ${props.className ?? ""
+        } ${styles[props.settings.pageSize]}  ${props.onClick && "cursor-pointer"
+        }`}
       style={{
         zIndex: props.className?.includes("turned")
           ? Math.abs(props.pageNumber)
@@ -36,11 +34,10 @@ export default function Page(
     >
       {props.pageNumber !== 0 && (
         <div
-          className={`absolute top-6 ${
-            props.pageNumber % 2 !== 0
-              ? "left-10 print:left-6"
-              : "right-10 print:right-6"
-          } ${props.settings.pageSize === "A5" && "text-sm"}`}
+          className={`absolute top-6 ${props.pageNumber % 2 !== 0
+            ? "left-10 print:left-6"
+            : "right-10 print:right-6"
+            } ${props.settings.pageSize === "A5" && "text-sm"}`}
         >
           {props.pageNumber}
         </div>

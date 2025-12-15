@@ -5,13 +5,17 @@ export type ChessPage = {
   games: [Game],
 } | {
   type: 'three',
-  games: [Game, Game, Game | undefined],
-} | {
-  type: 'four',
-  games: [Game, Game, Game, Game],
+  games: [Game]
+  | [Game, Game]
+  | [Game, Game, Game],
 } | {
   type: 'six',
-  games: [Game, Game, Game, Game, Game | undefined, Game | undefined],
+  games: [Game]
+  | [Game, Game]
+  | [Game, Game, Game]
+  | [Game, Game, Game, Game]
+  | [Game, Game, Game, Game, Game]
+  | [Game, Game, Game, Game, Game, Game],
 }
 
 export type User = {
