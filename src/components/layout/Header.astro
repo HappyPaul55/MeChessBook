@@ -1,0 +1,90 @@
+---
+import type { SiteSettings } from "../../lib/site";
+import Container from "../ui/Container.astro";
+import Mark from "../ui/Mark.astro";
+
+interface Props {
+  settings: SiteSettings;
+}
+
+const { settings } = Astro.props;
+
+const nav = [
+  { href: "/how-to-print", label: "Printing" },
+  { href: "/privacy", label: "Privacy" },
+];
+
+// `build.format: "file"` means Astro.url.pathname is /make.html at build time,
+// while the served URL is extensionless. Normalise both sides before comparing.
+const normalizePath = (value: string) =>
+  value
+    .replace(/index\.html$/, "")
+    .replace(/\.html$/, "")
+    .replace(/\/+$/, "") || "/";
+const isActive = (href: string) =>
+  normalizePath(Astro.url.pathname) === normalizePath(href);
+
+const current = (href: string) => (isActive(href) ? "page" : undefined);
+---
+
+<header
+  id="site-header"
+  class="site-header on-ink no-print fixed inset-x-0 top-0 z-50 border-b border-yellow bg-ink"
+>
+  <Container class="relative flex items-center justify-between gap-6 py-[0.9rem]">
+    <a
+      class="inline-flex items-center gap-[0.6rem]"
+      href="/"
+      aria-label={`${settings.name} home`}
+    >
+      <Mark size={30} />
+      <span
+        class="font-display text-[1.15rem] leading-none font-bold tracking-[-0.02em] text-cream"
+        >{settings.name}</span
+      >
+    </a>
+
+    <nav class="nav-links nav-links--bar" aria-label="Primary">
+      {
+        nav.map((item) => (
+          <a href={item.href} aria-current={current(item.href)}>
+            {item.label}
+          </a>
+        ))
+      }
+      <a class="nav-pill" href="/make" aria-current={current("/make")}>
+        Make a book
+      </a>
+    </nav>
+
+    <details class="nav-disclosure">
+      <summary class="nav-toggle" aria-label="Menu">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          aria-hidden="true"
+        >
+          <path
+            d="M4 7h16M4 12h16M4 17h16"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"></path>
+        </svg>
+      </summary>
+      <nav class="nav-links nav-links--panel" aria-label="Primary">
+        {
+          nav.map((item) => (
+            <a href={item.href} aria-current={current(item.href)}>
+              {item.label}
+            </a>
+          ))
+        }
+        <a class="nav-pill" href="/make" aria-current={current("/make")}>
+          Make a book
+        </a>
+      </nav>
+    </details>
+  </Container>
+</header>

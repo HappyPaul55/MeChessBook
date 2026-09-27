@@ -1,0 +1,42 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/ui/Container.astro";
+import { getEntry, render } from "astro:content";
+
+const entry = await getEntry("legal", "privacy");
+if (!entry) throw new Error("Missing privacy notice (legal/privacy).");
+const { Content } = await render(entry);
+---
+
+<BaseLayout
+  title={`${entry.data.title} — Me Chess Book`}
+  description={entry.data.description}
+  path="/privacy"
+  breadcrumbs={[{ name: "Privacy", path: "/privacy" }]}
+>
+  <section
+    class="on-ink grid-ink border-b border-line-ink bg-ink pt-[clamp(6rem,12vw,8rem)] pb-[clamp(2.5rem,5vw,3.5rem)]"
+  >
+    <Container>
+      <p class="comment"><span class="slash" aria-hidden="true">//</span> legal</p>
+      <h1
+        class="mt-4 font-display text-[clamp(2.2rem,5.4vw,3.6rem)] leading-[1.02] font-bold tracking-[-0.03em] text-balance text-cream"
+      >
+        {entry.data.title}
+      </h1>
+      <p
+        class="mt-4 font-mono text-[0.75rem] uppercase tracking-[0.08em] text-[rgba(250,250,244,0.55)]"
+      >
+        Last updated {entry.data.updated}
+      </p>
+    </Container>
+  </section>
+
+  <section class="grid-paper py-12 sm:py-16">
+    <Container>
+      <article class="legal">
+        <Content />
+      </article>
+    </Container>
+  </section>
+</BaseLayout>

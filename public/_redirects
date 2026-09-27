@@ -1,0 +1,3 @@
+# Cloudflare redirects.
+# The site has never had other URLs, so this is intentionally empty.
+# Add rules as `from  to  status`, e.g. `/old  /new  301`.

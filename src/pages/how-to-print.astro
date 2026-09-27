@@ -1,0 +1,152 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/ui/Container.astro";
+---
+
+<BaseLayout
+  title="How to print your chess book — Me Chess Book"
+  description="The few print-dialog settings that make a clean chess book PDF: exact page size, no margins, background graphics on, headers and footers off."
+  path="/how-to-print"
+  breadcrumbs={[{ name: "Printing", path: "/how-to-print" }]}
+>
+  <section
+    class="on-ink grid-ink border-b border-line-ink bg-ink pt-[clamp(6rem,12vw,8rem)] pb-[clamp(2.5rem,5vw,3.5rem)]"
+  >
+    <Container>
+      <p class="comment">
+        <span class="slash" aria-hidden="true">//</span> the printed page
+      </p>
+      <h1
+        class="mt-4 max-w-[24ch] font-display text-[clamp(2.2rem,5.4vw,3.6rem)] leading-[1.02] font-bold tracking-[-0.03em] text-balance text-cream"
+      >
+        How to print your book
+      </h1>
+      <p
+        class="mt-5 max-w-[44rem] text-[clamp(1rem,1.4vw,1.1rem)] leading-[1.6] text-[rgba(250,250,244,0.72)]"
+      >
+        The book is laid out at the exact size of the paper, so once the print
+        dialog matches that size there is nothing to adjust. Five settings are
+        all that matter.
+      </p>
+    </Container>
+  </section>
+
+  <section class="grid-paper border-b border-line py-12 sm:py-16">
+    <Container>
+      <div class="grid gap-12 lg:grid-cols-[1fr_20rem]">
+        <div class="max-w-[46rem]">
+          <h2
+            class="font-display text-[1.6rem] font-bold leading-tight tracking-[-0.01em]"
+          >
+            1. Make the book first
+          </h2>
+          <p class="mt-3 leading-[1.7] text-ink-soft">
+            On the <a class="underline decoration-yellow decoration-2 underline-offset-2" href="/make">Make a book</a> page, enter your username and choose your settings. Note the page size you picked — you will select the same one in the print dialog.
+          </p>
+
+          <h2
+            class="mt-10 font-display text-[1.6rem] font-bold leading-tight tracking-[-0.01em]"
+          >
+            2. Open the print dialog
+          </h2>
+          <p class="mt-3 leading-[1.7] text-ink-soft">
+            Press the <strong>Print</strong> button, or use <kbd>Ctrl</kbd>+<kbd>P</kbd> (<kbd>Cmd</kbd>+<kbd>P</kbd> on a Mac). Chrome or Edge are recommended: they handle exact page sizes and background graphics most reliably.
+          </p>
+
+          <h2
+            class="mt-10 font-display text-[1.6rem] font-bold leading-tight tracking-[-0.01em]"
+          >
+            3. Set five options
+          </h2>
+          <ol class="mt-4 grid gap-3 text-ink-soft">
+            <li class="flex gap-3">
+              <span class="font-mono font-bold text-yellow-deep">01</span>
+              <span><strong>Paper size</strong> — the size you chose (A4 or A5).</span>
+            </li>
+            <li class="flex gap-3">
+              <span class="font-mono font-bold text-yellow-deep">02</span>
+              <span><strong>Margins</strong> — set to <em>None</em>.</span>
+            </li>
+            <li class="flex gap-3">
+              <span class="font-mono font-bold text-yellow-deep">03</span>
+              <span><strong>Scale</strong> — leave at <em>100%</em> (or <em>Default</em>); do not use &ldquo;Fit to page&rdquo;.</span>
+            </li>
+            <li class="flex gap-3">
+              <span class="font-mono font-bold text-yellow-deep">04</span>
+              <span><strong>Background graphics</strong> — <em>on</em>. This prints the cover art and the dark chessboard squares.</span>
+            </li>
+            <li class="flex gap-3">
+              <span class="font-mono font-bold text-yellow-deep">05</span>
+              <span><strong>Headers and footers</strong> — <em>off</em>, so no date or URL is added.</span>
+            </li>
+          </ol>
+
+          <h2
+            class="mt-10 font-display text-[1.6rem] font-bold leading-tight tracking-[-0.01em]"
+          >
+            4. Save as a PDF
+          </h2>
+          <p class="mt-3 leading-[1.7] text-ink-soft">
+            Choose <em>Save as PDF</em> as the destination to get a file you can keep or send to a printer, or pick your printer to print it directly. If you are printing a physical copy, print <strong>double-sided</strong> (flip on the long edge); the book is padded to an even number of pages so the sheets line up.
+          </p>
+
+          <h2
+            class="mt-10 font-display text-[1.6rem] font-bold leading-tight tracking-[-0.01em]"
+          >
+            5. To have it bound
+          </h2>
+          <p class="mt-3 leading-[1.7] text-ink-soft">
+            For a proper book, send the PDF to a bindery such as <a class="underline decoration-yellow decoration-2 underline-offset-2" href="https://mixam.com/" target="_blank" rel="noopener noreferrer">Mixam</a>. A5 is a good pocket size; A4 is easier to read. The PDF is already the right size and needs no bleed.
+          </p>
+        </div>
+
+        <aside class="no-print">
+          <div class="panel">
+            <h2 class="panel__title">Print cheat-sheet</h2>
+            <ul class="mt-4 grid gap-3 font-mono text-[0.8rem]">
+              <li class="flex justify-between gap-4 border-b border-line pb-2">
+                <span class="text-muted">Paper size</span><span>A4 / A5</span>
+              </li>
+              <li class="flex justify-between gap-4 border-b border-line pb-2">
+                <span class="text-muted">Margins</span><span>None</span>
+              </li>
+              <li class="flex justify-between gap-4 border-b border-line pb-2">
+                <span class="text-muted">Scale</span><span>100%</span>
+              </li>
+              <li class="flex justify-between gap-4 border-b border-line pb-2">
+                <span class="text-muted">Background graphics</span><span>On</span>
+              </li>
+              <li class="flex justify-between gap-4">
+                <span class="text-muted">Headers &amp; footers</span><span>Off</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="panel mt-6">
+            <h2 class="panel__title">If something looks wrong</h2>
+            <dl class="mt-4 grid gap-4 text-[0.9rem] leading-[1.6]">
+              <div>
+                <dt class="font-bold">Board squares are blank</dt>
+                <dd class="text-ink-soft">
+                  Background graphics is off. Turn it on and print again.
+                </dd>
+              </div>
+              <div>
+                <dt class="font-bold">Pages have a border of white</dt>
+                <dd class="text-ink-soft">
+                  Margins are not set to <em>None</em>, or the scale is not 100%.
+                </dd>
+              </div>
+              <div>
+                <dt class="font-bold">Extra blank sheets</dt>
+                <dd class="text-ink-soft">
+                  Headers and footers are on; they add a margin line to every page.
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </aside>
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

@@ -1,0 +1,45 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/ui/Container.astro";
+import BookApp from "../components/book/BookApp";
+import { DEFAULT_PAGE_SIZE } from "../lib/book";
+import { getEntry } from "astro:content";
+
+const siteEntry = await getEntry("site", "main");
+if (!siteEntry) throw new Error("Missing site settings entry (site/main).");
+const site = siteEntry.data;
+---
+
+<BaseLayout
+  title="Make your chess book — Me Chess Book"
+  description="Fetch your Lichess games and turn them into a printable chess book. Choose the page size and settings, then print or save the PDF."
+  path="/make"
+  breadcrumbs={[{ name: "Make a book", path: "/make" }]}
+  pageSize={DEFAULT_PAGE_SIZE}
+>
+  <section
+    class="no-print on-ink grid-ink border-b border-line-ink bg-ink pt-[clamp(6rem,12vw,8rem)] pb-[clamp(2.5rem,5vw,3.5rem)]"
+  >
+    <Container>
+      <p class="comment">
+        <span class="slash" aria-hidden="true">//</span> the bookmaker
+      </p>
+      <h1
+        class="mt-4 max-w-[24ch] font-display text-[clamp(2.2rem,5.4vw,3.6rem)] leading-[1.02] font-bold tracking-[-0.03em] text-balance text-cream"
+      >
+        Make your chess book
+      </h1>
+      <p
+        class="mt-5 max-w-[44rem] text-[clamp(1rem,1.4vw,1.1rem)] leading-[1.6] text-[rgba(250,250,244,0.72)]"
+      >
+        Enter your Lichess username, choose how the book should look, and the
+        tool will fetch your games and lay them out. Then print it, or save it
+        as a PDF to have bound.
+      </p>
+    </Container>
+  </section>
+
+  <section class="px-5 py-12 sm:py-16 print:px-0 print:py-0">
+    <BookApp client:load siteUrl={site.url} />
+  </section>
+</BaseLayout>

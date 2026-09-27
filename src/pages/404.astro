@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Container from "../components/ui/Container.astro";
+import Button from "../components/ui/Button.astro";
+---
+
+<BaseLayout
+  title="Page not found — Me Chess Book"
+  description="That page does not exist. Head back to Me Chess Book to make a chess book from your Lichess games."
+  path="/404"
+  noindex
+>
+  <section
+    class="on-ink grid-ink pt-[clamp(6rem,12vw,8rem)] pb-[clamp(4rem,12vw,8rem)]"
+  >
+    <Container class="text-center">
+      <p class="comment"><span class="slash" aria-hidden="true">//</span> error 404</p>
+      <h1
+        class="mt-5 font-display text-[clamp(2.8rem,10vw,5.4rem)] leading-[0.95] font-bold tracking-[-0.035em] text-balance text-cream"
+      >
+        No such page
+      </h1>
+      <p
+        class="mx-auto mt-6 max-w-[36rem] text-[clamp(1rem,1.4vw,1.15rem)] leading-[1.6] text-[rgba(250,250,244,0.72)]"
+      >
+        The page you were looking for is not here. It may have moved, or the
+        link may be wrong.
+      </p>
+      <div class="no-print mt-8 flex flex-wrap justify-center gap-3.5">
+        <Button href="/" variant="primary">Back home</Button>
+        <Button href="/make" variant="outlineInk">Make a book</Button>
+      </div>
+    </Container>
+  </section>
+</BaseLayout>

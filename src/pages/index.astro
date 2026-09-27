@@ -1,0 +1,21 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/sections/Hero.astro";
+import HowItWorks from "../components/sections/HowItWorks.astro";
+import PrintNote from "../components/sections/PrintNote.astro";
+import { getEntry } from "astro:content";
+
+const siteEntry = await getEntry("site", "main");
+if (!siteEntry) throw new Error("Missing site settings entry (site/main).");
+const site = siteEntry.data;
+---
+
+<BaseLayout
+  title="Me Chess Book — turn your Lichess games into a printed chess book"
+  description={site.description}
+  path="/"
+>
+  <Hero />
+  <HowItWorks />
+  <PrintNote />
+</BaseLayout>
