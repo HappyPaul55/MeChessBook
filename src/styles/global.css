@@ -194,10 +194,18 @@
     color: var(--color-yellow);
   }
 
+  /* Yellow highlighter.
+     Drawn as a band sized to Space Grotesk's actual glyphs (0.90em) rather than
+     the full font box (1.27em). With the tight `leading-[0.98]` the headings
+     use, a full-font-box background bleeds over the line above; this band
+     covers the text without touching adjacent lines. */
   .mark {
-    background: var(--color-yellow);
+    background-image: linear-gradient(var(--color-yellow), var(--color-yellow));
+    background-repeat: no-repeat;
+    background-size: 100% 0.96em;
+    background-position: 0 0.24em;
     color: var(--color-ink);
-    padding: 0.02em 0.16em;
+    padding: 0 0.16em;
     border-radius: 2px;
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
