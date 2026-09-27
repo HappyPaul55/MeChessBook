@@ -5,7 +5,7 @@ import react from "@astrojs/react";
 import tailwindcss from "@tailwindcss/vite";
 
 // Static-first: the whole tool is a client-side React island, so no adapter is
-// needed. Cloudflare Pages serves `dist/` as-is.
+// needed. `wrangler.jsonc` serves `dist/` as Cloudflare Worker static assets.
 export default defineConfig({
   site: "https://chess-book.happypaul55.com",
   build: {

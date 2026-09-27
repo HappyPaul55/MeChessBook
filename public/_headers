@@ -1,5 +1,5 @@
 # Cloudflare headers for the static site.
-# https://developers.cloudflare.com/pages/configuration/headers/
+# https://developers.cloudflare.com/workers/static-assets/headers/
 
 /*
   X-Content-Type-Options: nosniff

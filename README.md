@@ -93,12 +93,15 @@ PDFs and a screenshot are written to `tmp/pdf-check/` for eyeballing.
 
 ## Deployment
 
-Deployed to **Cloudflare Pages** (static, no adapter) via its own Git-connected
-project:
+Deployed as a **Cloudflare Worker with static assets** via Workers Builds,
+configured by `wrangler.jsonc` (`name: client-chess-book-happypaul55-com`,
+`assets.directory: ./dist`, `not_found_handling: "404-page"`). There is no
+server code, so no Astro adapter is used.
 
 ```text
-Build command:          bun run build
-Build output directory: dist
+Build command:  bun run build
+Deploy command: bunx wrangler deploy
+Output:         ./dist
 ```
 
 The production domain is `https://chess-book.happypaul55.com`, set as `site` in

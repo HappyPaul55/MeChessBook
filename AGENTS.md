@@ -168,9 +168,11 @@ it that way. Do not add another client framework.
 
 ## Deployment and handover
 
-- Static `dist/` on **Cloudflare Pages** (no adapter): build `bun run build`,
-  output `dist`. CI (`.github/workflows/ci.yml`) runs check/test/build plus the
-  print check.
+- Deployed as a **Cloudflare Worker with static assets** via Workers Builds
+  (`bun run build` → `bunx wrangler deploy`), configured by `wrangler.jsonc`
+  (`name: client-chess-book-happypaul55-com`, `assets.directory: ./dist`,
+  `not_found_handling: "404-page"`). No adapter, no server code. CI
+  (`.github/workflows/ci.yml`) runs check/test/build plus the print check.
 - `site` is `https://chess-book.happypaul55.com`; keep `astro.config.mjs`,
   `settings.json.url` and `public/robots.txt` in step if the domain changes.
 - Keep `README.md` accurate for handover: commands, build/output, deploy
