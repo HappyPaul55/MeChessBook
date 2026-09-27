@@ -1,0 +1,15 @@
+[
+  {
+    "id": "main",
+    "name": "Me Chess Book",
+    "shortName": "MCB",
+    "tagline": "Your Lichess games, as a printed chess book",
+    "description": "Turn your Lichess games into a printable chess book. Fetch your games, pick the highlights, then print or save to PDF and have it bound as a gift.",
+    "url": "https://chess-book.happypaul55.com",
+    "author": "HappyPaul55",
+    "authorUrl": "https://www.happypaul55.com",
+    "repo": "https://github.com/HappyPaul55/MeChessBook",
+    "license": "AGPL-3.0",
+    "licenseUrl": "https://www.gnu.org/licenses/agpl-3.0.html"
+  }
+]

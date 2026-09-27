@@ -1,36 +1,39 @@
 {
-  "name": "@happypaul55/my-chess-book",
+  "name": "me-chess-book",
+  "type": "module",
   "version": "1.0.0",
+  "private": true,
   "license": "AGPL-3.0-only",
+  "packageManager": "bun@1.4.2",
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "test": "echo 'no tests'",
-    "lint": "next lint",
-    "generate": "node ./generate-pdf.js"
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check": "astro check",
+    "test": "bun test",
+    "check:pdf": "bun run build && bun scripts/pdf-check.mjs",
+    "icons": "bun scripts/generate-icons.mjs",
+    "fonts": "bun scripts/fetch-fonts.mjs",
+    "astro": "astro"
   },
   "dependencies": {
-    "@tailwindcss/postcss": "^4.1.17",
-    "babel-plugin-react-compiler": "19.1.0-rc.2",
+    "@astrojs/react": "^7.0.0",
+    "@astrojs/sitemap": "^3.7.4",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.5",
     "chess.js": "^1.4.0",
-    "next": "^15.5.7",
-    "next-translate": "^2.6.2",
-    "react": "^19.2.1",
-    "react-dom": "^19.2.1",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
     "react-hook-form": "^7.68.0",
-    "react-icons": "^5.5.0"
+    "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
-    "@types/node": "^24.10.2",
-    "@types/react": "^19.2.7",
-    "@types/react-dom": "^19.2.3",
-    "autoprefixer": "^10.4.22",
-    "eslint": "^9.39.1",
-    "eslint-config-next": "^15.5.7",
-    "next-translate-plugin": "^2.6.2",
-    "postcss": "^8.5.6",
-    "tailwindcss": "^4.1.17",
-    "typescript": "^5.9.3"
+    "@astrojs/check": "^0.9.10",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "favicons": "^7.2.0",
+    "playwright": "^1.63.0",
+    "typescript": "^6.0.3"
   }
 }

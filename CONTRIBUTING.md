@@ -1,55 +1,57 @@
 # Contributing to Me Chess Book
+
 Thanks for your interest in contributing! 🎉
-This guide will help you get started with development and ensure smooth collaboration.
 
-## 🛠 Development Setup
-We recommend using VS Code or a compatible IDE that supports Dev Containers.
+## 🛠 Development setup
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/your-username/me-chess-book.git
-cd me-chess-book
-```
+We recommend VS Code with the Dev Containers extension.
 
-### 2. Open in a Dev Container
-Make sure you have [Dev Containers extension installed in VS Code](https://code.visualstudio.com/docs/devcontainers/containers).
-
-Open the folder in [VS Code](https://code.visualstudio.com/)
-
-When prompted, reopen in the dev container (or use `F1 → Dev Containers: Reopen in Container`)
-
-### 3. Start the Dev Server
-Inside the dev container terminal, run:
+### 1. Clone the repository
 
 ```bash
-pnpm install # optional as it's ran automatically at container boot up time.
-pnpm dev
+git clone https://github.com/HappyPaul55/MeChessBook.git
+cd MeChessBook
 ```
-This starts the local development server.
 
-### 4. Run a Production Build (for Testing)
-Before [opening a pull request](https://github.com/HappyPaul55/MeChessBook/compare), ensure the app builds correctly:
+### 2. Open in a dev container (or use Bun locally)
+
+Open the folder in VS Code and, when prompted, reopen in the dev container
+(`F1 → Dev Containers: Reopen in Container`). The container installs
+dependencies automatically.
+
+Without a container, install [Bun](https://bun.sh) and run:
 
 ```bash
-pnpm build
+bun install
+bun run dev
 ```
 
-## ✅ Pull Request Checklist
-Before submitting [a PR](https://github.com/HappyPaul55/MeChessBook/compare):
+### 3. Before opening a pull request
 
- - Your code builds with `pnpm build`
- - You've tested changes locally in the dev container
- - You've followed the coding style and conventions
- - Add or update documentation if necessary
- - Reference any relevant issue(s) in the PR description
+```bash
+bun run check      # types
+bun test           # unit tests
+bun run build      # production build
+bun run check:pdf  # print regression check (optional: bunx playwright install chromium)
+```
+
+Use **Bun** for everything (`bun`, `bunx`) — never `npm`/`npx`.
+
+## ✅ Pull request checklist
+
+- Your code passes `bun run check`, `bun test` and `bun run build`
+- If you touched the book, `bun run check:pdf` passes
+- You've followed the coding style and conventions (see `AGENTS.md`)
+- Documentation is updated where necessary
+- Reference any relevant issue(s) in the PR description
 
 ## 📬 Opening a PR
-When you're ready:
 
- - Push your branch to [GitHub](https://github.com)
- - Open [a pull request](https://github.com/HappyPaul55/MeChessBook/compare) with a clear title and description
- - Wait for feedback or approval from the maintainers
- - Once merged to `main`, it will be automatically deployed!
+- Push your branch to GitHub
+- Open a [pull request](https://github.com/HappyPaul55/MeChessBook/compare) with a
+  clear title and description
+- Once merged to `main`, CI runs and the site deploys
 
-## 🙌 Thank You
-We appreciate your time and contributions. Every bit helps make [Me Chess Book](http://localhost:3000/) better!
+## 🙌 Thank you
+
+Every bit helps make Me Chess Book better.

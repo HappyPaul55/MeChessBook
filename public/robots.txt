@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://chess-book.happypaul55.com/sitemap-index.xml

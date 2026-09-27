@@ -1,0 +1,58 @@
+---
+import Container from "../ui/Container.astro";
+import Button from "../ui/Button.astro";
+
+const settings = [
+  ["Paper size", "Match the book: A4 or A5"],
+  ["Margins", "None"],
+  ["Scale", "100% (do not \u201cfit to page\u201d)"],
+  ["Background graphics", "On"],
+  ["Headers and footers", "Off"],
+];
+---
+
+<section
+  id="print"
+  class="on-ink grid-ink scroll-mt-24 border-b border-line-ink bg-ink py-[clamp(4rem,10vw,8rem)]"
+>
+  <Container>
+    <div class="grid gap-12 lg:grid-cols-[1fr_1fr] lg:items-center">
+      <div>
+        <p class="comment">
+          <span class="slash" aria-hidden="true">//</span> 02 · the printed page
+        </p>
+        <h2
+          class="mt-5 font-display text-[clamp(2.2rem,5.4vw,4rem)] leading-[1] font-bold tracking-[-0.035em] text-balance text-cream"
+        >
+          Getting a clean PDF
+        </h2>
+        <p
+          class="mt-5 max-w-[40rem] text-[clamp(1rem,1.4vw,1.15rem)] leading-[1.6] text-[rgba(250,250,244,0.7)]"
+        >
+          The book is sized to the exact page, so the print dialog only needs a
+          few settings. Turn on background graphics and the cover art and
+          chessboard squares come through; leave it off and they print blank.
+        </p>
+        <div class="no-print mt-8 flex flex-wrap gap-3.5">
+          <Button href="/make" variant="primary">Make a book</Button>
+          <Button href="/how-to-print" variant="outlineInk">
+            Full printing guide
+          </Button>
+        </div>
+      </div>
+
+      <ul class="grid gap-3">
+        {
+          settings.map(([label, value]) => (
+            <li class="flex items-baseline justify-between gap-6 border-b border-line-ink pb-3 font-mono text-[0.8rem]">
+              <span class="uppercase tracking-[0.08em] text-[rgba(250,250,244,0.55)]">
+                {label}
+              </span>
+              <span class="text-right text-cream">{value}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </Container>
+</section>

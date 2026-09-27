@@ -1,0 +1,753 @@
+@import "tailwindcss";
+@config "../../tailwind.config.js";
+
+/* ------------------------------------------------------------------
+   Self-hosted fonts (latin subset)
+
+   The site follows the main happypaul55.com build: Space Grotesk
+   (display + body) with Space Mono for labels. The printed book keeps
+   its own pairing — Anton for display, Roboto for body — so it stays
+   the artefact it was, and is scoped to .book-container below.
+------------------------------------------------------------------ */
+@font-face {
+  font-family: "Anton";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/anton-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/roboto-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Roboto";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/roboto-latin-italic.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("/fonts/space-grotesk-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/space-mono-latin-400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Space Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/space-mono-latin-700.woff2") format("woff2");
+}
+
+/* ------------------------------------------------------------------
+   Design tokens (Tailwind v4 theme -> CSS variables + utilities)
+   Concept: an engineer's notebook that happens to be about chess —
+   ink, paper and electric yellow. The book keeps its own classical
+   type and layout; these tokens dress the site around it.
+------------------------------------------------------------------ */
+@theme {
+  --color-ink: #0c0d0a;
+  --color-ink-2: #15170f;
+  --color-ink-soft: #43463a;
+  --color-muted: #62655a;
+  --color-paper: #f3f4ee;
+  --color-paper-2: #e8eae0;
+  --color-cream: #fafaf4;
+  --color-yellow: #ffd400;
+  --color-yellow-deep: #d9b900;
+  --color-line: rgba(12, 13, 10, 0.16);
+  --color-line-strong: rgba(12, 13, 10, 0.34);
+  --color-line-ink: rgba(250, 250, 244, 0.16);
+  --color-line-ink-strong: rgba(250, 250, 244, 0.34);
+
+  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, "SFMono-Regular", monospace;
+
+  --radius-brand: 6px;
+  --ease-brand: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ------------------------------------------------------------------
+   Base
+------------------------------------------------------------------ */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+    scroll-padding-top: 5.5rem;
+    /* The paper colour lives on the root, which paints first as the canvas.
+       The body must stay transparent: the book pages are painted at a negative
+       z-index, and an opaque body background would paint over them, hiding every
+       page except the current one. */
+    background-color: var(--color-paper);
+  }
+  body {
+    font-family: var(--font-body);
+    color: var(--color-ink);
+    background-color: transparent;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: var(--color-yellow);
+    color: var(--color-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+    border-radius: 3px;
+  }
+  .on-ink :focus-visible {
+    outline-color: var(--color-yellow);
+  }
+  [hidden] {
+    display: none !important;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+  /* Interactive controls show a pointer. Tailwind v4's preflight leaves buttons
+     with the default cursor, so state it here for every button on the site. */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  summary {
+    cursor: pointer;
+  }
+  button:disabled {
+    cursor: not-allowed;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Site components
+------------------------------------------------------------------ */
+@layer components {
+  .skip-link {
+    position: absolute;
+    left: 1rem;
+    top: -100%;
+    z-index: 100;
+    padding: 0.75rem 1.25rem;
+    border-radius: var(--radius-brand);
+    background: var(--color-yellow);
+    color: var(--color-ink);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    transition: top 0.2s var(--ease-brand);
+  }
+  .skip-link:focus {
+    top: 1rem;
+  }
+
+  /* Backdrops: graph paper (light) and dot grid (dark) */
+  .grid-paper {
+    background-image:
+      linear-gradient(to right, rgba(12, 13, 10, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(12, 13, 10, 0.05) 1px, transparent 1px);
+    background-size: 34px 34px;
+  }
+  .grid-ink {
+    background-image: radial-gradient(
+      rgba(250, 250, 244, 0.09) 1px,
+      transparent 1.5px
+    );
+    background-size: 24px 24px;
+  }
+
+  /* Monospace "comment" section label */
+  .comment {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: var(--color-muted);
+  }
+  .comment .slash {
+    color: var(--color-yellow-deep);
+  }
+  .on-ink .comment {
+    color: rgba(250, 250, 244, 0.62);
+  }
+  .on-ink .comment .slash {
+    color: var(--color-yellow);
+  }
+
+  .mark {
+    background: var(--color-yellow);
+    color: var(--color-ink);
+    padding: 0.02em 0.16em;
+    border-radius: 2px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    padding: 0.28rem 0.55rem;
+    border-radius: 999px;
+    border: 1px solid var(--color-line-strong);
+    color: var(--color-ink-soft);
+    background: rgba(12, 13, 10, 0.02);
+  }
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-brand);
+    background: var(--color-paper);
+    padding: clamp(1.15rem, 2.4vw, 1.5rem);
+    transition:
+      transform 0.28s var(--ease-brand),
+      border-color 0.28s var(--ease-brand),
+      box-shadow 0.28s var(--ease-brand),
+      background-color 0.28s var(--ease-brand);
+  }
+  .card:hover {
+    transform: translate(-3px, -3px);
+    border-color: var(--color-ink);
+    box-shadow: 6px 6px 0 0 var(--color-yellow);
+    background: var(--color-cream);
+  }
+  .card--brand {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 212, 0, 0.24),
+      rgba(255, 212, 0, 0.1)
+    );
+    border-color: var(--color-yellow-deep);
+  }
+  .card--brand:hover {
+    background: linear-gradient(
+      180deg,
+      rgba(255, 212, 0, 0.33),
+      rgba(255, 212, 0, 0.16)
+    );
+    border-color: var(--color-ink);
+    box-shadow: 6px 6px 0 0 var(--color-ink);
+  }
+
+  .panel {
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-brand);
+    background: var(--color-cream);
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+  }
+  .panel__title {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    background: var(--color-yellow);
+    border-radius: 999px;
+    padding: 0.3rem 0.62rem;
+  }
+
+  .group-label {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-top: clamp(2.5rem, 5vw, 3.5rem);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .group-label::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 1px;
+    background: var(--color-line);
+  }
+
+  .link-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-ink);
+    border-bottom: 2px solid var(--color-yellow);
+    padding-bottom: 1px;
+    transition: gap 0.2s var(--ease-brand);
+  }
+  .link-arrow:hover {
+    gap: 0.6rem;
+  }
+  .on-ink .link-arrow {
+    color: var(--color-cream);
+  }
+
+  /* Responsive navigation (dark bar) */
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1.7rem;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(250, 250, 244, 0.66);
+  }
+  .nav-links a {
+    transition: color 0.2s var(--ease-brand);
+  }
+  .nav-links a:hover {
+    color: var(--color-yellow);
+  }
+  .nav-links a[aria-current="page"] {
+    color: var(--color-yellow);
+  }
+  .nav-links .nav-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid var(--color-line-ink-strong);
+    border-radius: 999px;
+    color: var(--color-cream);
+    transition:
+      color 0.2s var(--ease-brand),
+      background-color 0.2s var(--ease-brand),
+      border-color 0.2s var(--ease-brand);
+  }
+  .nav-links .nav-pill:hover {
+    color: var(--color-ink);
+    background: var(--color-yellow);
+    border-color: var(--color-yellow);
+  }
+
+  /* Mobile menu: a native <details> disclosure, no JavaScript */
+  .nav-disclosure {
+    display: none;
+  }
+  .nav-toggle {
+    display: grid;
+    place-items: center;
+    height: 42px;
+    width: 42px;
+    border: 1px solid var(--color-line-ink-strong);
+    border-radius: var(--radius-brand);
+    color: var(--color-cream);
+    cursor: pointer;
+    list-style: none;
+    transition: border-color 0.2s var(--ease-brand);
+  }
+  .nav-toggle:hover {
+    border-color: var(--color-yellow);
+  }
+  .nav-toggle::-webkit-details-marker {
+    display: none;
+  }
+  @media (max-width: 860px) {
+    .nav-links--bar {
+      display: none;
+    }
+    .nav-disclosure {
+      display: block;
+    }
+    .nav-links--panel {
+      display: none;
+      position: absolute;
+      top: calc(100% + 0.65rem);
+      left: 0;
+      right: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.15rem;
+      padding: 0.55rem;
+      background: var(--color-cream);
+      border: 2px solid var(--color-ink);
+      border-top: 4px solid var(--color-yellow);
+      border-radius: var(--radius-brand);
+      box-shadow: 6px 6px 0 0 var(--color-yellow);
+    }
+    .nav-links--panel a {
+      display: block;
+      padding: 0.75rem 0.85rem;
+      border-radius: 4px;
+      color: var(--color-ink);
+    }
+    .nav-links--panel a:hover {
+      color: var(--color-ink);
+      background: color-mix(in srgb, var(--color-yellow) 45%, #fff);
+    }
+    .nav-links--panel a[aria-current="page"] {
+      color: var(--color-ink);
+      background: var(--color-yellow);
+    }
+    .nav-links--panel .nav-pill {
+      text-align: center;
+      color: var(--color-ink);
+      border-color: var(--color-ink);
+      background: var(--color-yellow);
+    }
+    .nav-links--panel .nav-pill:hover {
+      color: var(--color-ink);
+      border-color: var(--color-ink);
+      background: var(--color-yellow-deep);
+    }
+    .nav-disclosure[open] .nav-links--panel {
+      display: flex;
+    }
+  }
+
+  /* Segmented choice (book settings) — the same hairline + yellow language
+     as the site buttons, sized to sit in a row. */
+  .choice-group {
+    display: flex;
+    width: 100%;
+    gap: 0.55rem;
+  }
+  .choice {
+    flex: 1 1 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.62rem 0.4rem;
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-brand);
+    background: transparent;
+    color: var(--color-ink);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition:
+      transform 0.2s var(--ease-brand),
+      background-color 0.2s var(--ease-brand),
+      border-color 0.2s var(--ease-brand),
+      box-shadow 0.2s var(--ease-brand),
+      color 0.2s var(--ease-brand);
+  }
+  .choice:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-ink);
+    background: var(--color-ink);
+    color: var(--color-cream);
+  }
+  .choice[aria-pressed="true"] {
+    border-color: var(--color-ink);
+    background: var(--color-yellow);
+    color: var(--color-ink);
+    box-shadow: 4px 4px 0 0 var(--color-ink);
+  }
+
+  .field-label {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin-bottom: 0.4rem;
+  }
+  .input {
+    width: 100%;
+    padding: 0.72rem 0.85rem;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    color: var(--color-ink);
+    background: #fff;
+    border: 1px solid var(--color-line-strong);
+    border-radius: var(--radius-brand);
+    transition:
+      border-color 0.15s var(--ease-brand),
+      box-shadow 0.15s var(--ease-brand);
+  }
+  .input::placeholder {
+    color: var(--color-muted);
+  }
+  .input:focus {
+    outline: none;
+    border-color: var(--color-ink);
+    box-shadow: 0 0 0 3px rgba(255, 212, 0, 0.5);
+  }
+
+  .alert {
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-brand);
+    font-size: 0.94rem;
+    border: 1px solid;
+  }
+  .alert--error {
+    color: #7d0a1b;
+    background: color-mix(in srgb, #b01027 10%, #fff);
+    border-color: #b01027;
+  }
+  .alert--info {
+    color: var(--color-ink-soft);
+    background: var(--color-paper-2);
+    border-color: var(--color-line-strong);
+  }
+
+  .spinner {
+    width: 44px;
+    height: 44px;
+    border: 6px solid var(--color-line-strong);
+    border-top-color: var(--color-ink);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  /* Rendered markdown (privacy notice) --------------------------- */
+  .legal {
+    max-width: 46rem;
+  }
+  .legal > * + * {
+    margin-top: 1rem;
+  }
+  .legal h2 {
+    margin-top: 2.25rem;
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .legal h3 {
+    margin-top: 1.75rem;
+    font-family: var(--font-display);
+    font-size: 1.12rem;
+    font-weight: 700;
+  }
+  .legal p,
+  .legal li {
+    color: var(--color-ink-soft);
+    line-height: 1.65;
+  }
+  .legal ul,
+  .legal ol {
+    padding-left: 1.35rem;
+    display: grid;
+    gap: 0.35rem;
+  }
+  .legal ul {
+    list-style: disc;
+  }
+  .legal ol {
+    list-style: decimal;
+  }
+  .legal strong {
+    color: var(--color-ink);
+  }
+  .legal a {
+    color: var(--color-ink);
+    border-bottom: 2px solid var(--color-yellow);
+  }
+  .legal code {
+    font-family: var(--font-mono);
+    font-size: 0.88em;
+    background: var(--color-paper-2);
+    padding: 0.1rem 0.35rem;
+    border-radius: 3px;
+    overflow-wrap: anywhere;
+  }
+}
+
+/* ------------------------------------------------------------------
+   The book
+   Ported from the original build and left untouched: this is the
+   artefact people print, so its box model and print overrides are
+   deliberately preserved. Its fonts are pinned here so the site can
+   change typeface without disturbing the book.
+------------------------------------------------------------------ */
+.book-container {
+  font-family: "Roboto", ui-sans-serif, system-ui, sans-serif;
+  /* The book pages are painted at a negative z-index and the container is
+     transparent. Isolating the container makes it their stacking context, so
+     they paint (and hit-test) above its background instead of falling behind
+     the page — otherwise the container and its ancestors swallow their clicks
+     and the book cannot be turned. */
+  isolation: isolate;
+  pointer-events: none;
+}
+
+.book-container > div {
+  pointer-events: auto;
+}
+
+@media print {
+  section {
+    break-inside: avoid;
+  }
+}
+
+.book-container > div {
+  position: relative;
+}
+
+@media print {
+  .book-container > div.bg-white::after {
+    display: none !important;
+  }
+}
+
+.book-container > div.bg-white:nth-child(even)::after,
+.book-container.simulate > div.bg-white:nth-child(odd)::after {
+  content: "";
+  position: absolute;
+  display: block;
+  top: 0px;
+  bottom: 0px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(163, 163, 163, 0.75) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  left: -5%;
+  width: 10%;
+}
+
+.book-container.simulate > div.bg-white:nth-child(odd)::after {
+  left: initial;
+  right: -5%;
+}
+
+.book-container.simulate {
+  position: relative;
+}
+
+@media print {
+  .book-container.simulate > div {
+    position: relative !important;
+    transition: none !important;
+    left: inherit !important;
+    right: inherit !important;
+    transform: none !important;
+  }
+}
+
+.book-container.simulate > div {
+  position: absolute;
+  transition: transform 2s;
+  left: 0%;
+  transform: rotatey(180deg);
+  transform-origin: right center;
+  backface-visibility: hidden;
+  display: block;
+}
+
+.book-container.simulate > div.turned {
+  transform: rotatey(0deg);
+}
+
+.book-container.simulate > div:nth-child(even) {
+  transform: rotatey(0deg);
+  transform-origin: left center;
+  left: 50%;
+}
+
+.book-container.simulate > div:nth-child(even).turned {
+  transform: rotatey(180deg);
+}
+
+.chessboard {
+  background: url(/pieces/background.png?2) top left repeat;
+}
+
+.page-even {
+  padding-left: 4rem;
+  padding-right: 2rem;
+}
+
+.page-odd {
+  padding-left: 2rem;
+  padding-right: 4rem;
+}
+
+/* ------------------------------------------------------------------
+   Reduced motion
+------------------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Print — site chrome only.
+   Deliberately narrow: the book must keep its colours and backgrounds,
+   so there is no global "background: transparent" reset here.
+------------------------------------------------------------------ */
+@media print {
+  .no-print,
+  .site-header,
+  .site-footer,
+  .skip-link {
+    display: none !important;
+  }
+  /* Keep the canvas white but leave the body transparent. The book pages are
+     painted at a negative z-index, so an opaque body background would paint
+     over them and blank every page except the front cover. */
+  html {
+    background: #fff !important;
+  }
+  body {
+    background: transparent !important;
+  }
+  .site-main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+}

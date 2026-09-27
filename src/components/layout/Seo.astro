@@ -1,0 +1,127 @@
+---
+import type { SiteSettings } from "../../lib/site";
+
+interface Crumb {
+  name: string;
+  path: string;
+}
+
+interface Props {
+  title: string;
+  description: string;
+  path?: string;
+  type?: string;
+  noindex?: boolean;
+  breadcrumbs?: Crumb[];
+  settings: SiteSettings;
+}
+
+const {
+  title,
+  description,
+  path = "/",
+  type = "website",
+  noindex = false,
+  breadcrumbs = [],
+  settings,
+} = Astro.props;
+
+const normalise = (value: string) =>
+  value === "/" ? "/" : value.replace(/\/+$/, "");
+
+const canonical = new URL(normalise(path), settings.url).href;
+const ogImage = new URL(
+  "/icons/apple-touch-icon-1024x1024.png",
+  settings.url,
+).href;
+const ogAlt = `${settings.name} — a yellow tile with an ink chess pawn`;
+
+const author = {
+  "@type": "Person",
+  "@id": `${settings.authorUrl}/#person`,
+  name: settings.author,
+  url: settings.authorUrl,
+  sameAs: [settings.authorUrl, settings.repo],
+};
+
+const application = {
+  "@type": "WebApplication",
+  "@id": `${settings.url}/#app`,
+  name: settings.name,
+  url: `${settings.url}/`,
+  description: settings.description,
+  applicationCategory: "UtilitiesApplication",
+  operatingSystem: "Any",
+  browserRequirements: "Requires JavaScript",
+  inLanguage: "en-GB",
+  isAccessibleForFree: true,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "GBP" },
+  author: { "@id": `${settings.authorUrl}/#person` },
+  image: ogImage,
+};
+
+const website = {
+  "@type": "WebSite",
+  "@id": `${settings.url}/#website`,
+  url: `${settings.url}/`,
+  name: settings.name,
+  description: settings.description,
+  inLanguage: "en-GB",
+  publisher: { "@id": `${settings.authorUrl}/#person` },
+};
+
+const graph: unknown[] = [author, application, website];
+
+if (breadcrumbs.length > 0) {
+  graph.push({
+    "@type": "BreadcrumbList",
+    itemListElement: breadcrumbs.map((crumb, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: crumb.name,
+      item: new URL(normalise(crumb.path), settings.url).href,
+    })),
+  });
+}
+
+const jsonLd = { "@context": "https://schema.org", "@graph": graph };
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta
+  name="robots"
+  content={noindex ? "noindex, follow" : "index, follow, max-image-preview:large"}
+/>
+<meta name="author" content={settings.author} />
+<meta name="color-scheme" content="light" />
+<link
+  rel="sitemap"
+  type="application/xml"
+  title="Sitemap"
+  href="/sitemap-index.xml"
+/>
+
+<!-- Open Graph -->
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={settings.name} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:locale" content="en_GB" />
+<meta property="og:image" content={ogImage} />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1024" />
+<meta property="og:image:height" content="1024" />
+<meta property="og:image:secure_url" content={ogImage} />
+<meta property="og:image:alt" content={ogAlt} />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+<meta name="twitter:image:alt" content={ogAlt} />
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

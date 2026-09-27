@@ -1,0 +1,101 @@
+---
+import Container from "../ui/Container.astro";
+
+const steps = [
+  {
+    n: "01",
+    title: "Enter your username",
+    body: "Type your Lichess handle. The tool checks it exists, then fetches only your public games — directly from Lichess to your browser.",
+  },
+  {
+    n: "02",
+    title: "Choose the book",
+    body: "Page size, colour, results, whether analysis must be present. The strongest games are laid out first, each with the board at its most interesting moment.",
+  },
+  {
+    n: "03",
+    title: "Print or bind",
+    body: "Print at home, or save a PDF and send it to a bookbinder. Nothing is uploaded, and there is no account to make.",
+  },
+];
+
+const features = [
+  {
+    title: "A real position, not a diagram",
+    body: "Every board is rebuilt from the game's own PGN. Where Lichess has analysed the game, the highlight lands on the biggest turning point; otherwise it picks a sensible mid-game moment.",
+  },
+  {
+    title: "The best game, first",
+    body: "Games are sorted by the combined rating of both players, so the strongest game earns a full page and the rest fill tidy multi-game layouts.",
+  },
+  {
+    title: "A4 or A5",
+    body: "A5 is a proper pocket chess book; A4 gives the boards and move lists more room. Both are sized exactly, so printing needs no scaling.",
+  },
+  {
+    title: "Made to be bound",
+    body: "Cover art, an imprint page, a stats page, move-list tables and blank notes pages — a complete book, ready for a binder such as Mixam.",
+  },
+];
+---
+
+<section
+  id="how"
+  class="grid-paper scroll-mt-24 border-b border-line py-[clamp(3.5rem,9vw,7rem)]"
+>
+  <Container>
+    <div class="grid gap-8 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-16">
+      <div>
+        <p class="comment">
+          <span class="slash" aria-hidden="true">//</span> 01 · the run-through
+        </p>
+        <h2
+          class="mt-4 font-display text-[clamp(1.9rem,3.6vw,2.7rem)] leading-[1.05] font-bold tracking-[-0.02em] text-balance"
+        >
+          From a username to a bound book.
+        </h2>
+      </div>
+      <p
+        class="max-w-[42rem] self-end text-[clamp(0.98rem,1.4vw,1.1rem)] leading-[1.65] text-ink-soft"
+      >
+        Three steps, and the middle one is where the book takes shape — page
+        size, which games to include, and whether analysis has to be present.
+      </p>
+    </div>
+
+    <h3 class="group-label">How it works</h3>
+    <ol class="mt-6 grid gap-5 sm:grid-cols-3">
+      {
+        steps.map((step) => (
+          <li class="card">
+            <span class="font-mono text-[0.72rem] font-bold text-muted">
+              {step.n}
+            </span>
+            <h4 class="mt-4 font-display text-[1.25rem] leading-tight font-bold tracking-[-0.01em]">
+              {step.title}
+            </h4>
+            <p class="mt-2 text-[0.94rem] leading-[1.6] text-ink-soft">
+              {step.body}
+            </p>
+          </li>
+        ))
+      }
+    </ol>
+
+    <h3 class="group-label">What you get</h3>
+    <ul class="mt-6 grid gap-5 sm:grid-cols-2">
+      {
+        features.map((feature) => (
+          <li class="card">
+            <h4 class="font-display text-[1.25rem] leading-tight font-bold tracking-[-0.01em]">
+              {feature.title}
+            </h4>
+            <p class="mt-2 text-[0.94rem] leading-[1.6] text-ink-soft">
+              {feature.body}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
+  </Container>
+</section>
