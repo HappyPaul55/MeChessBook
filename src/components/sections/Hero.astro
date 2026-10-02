@@ -5,8 +5,8 @@ import Button from "../ui/Button.astro";
 const highlights = [
   { value: "A4 · A5", label: "Page sizes" },
   { value: "Lichess", label: "Games from" },
-  { value: "None", label: "Accounts" },
-];
+  { value: "None", label: "Data Collection" },
+] as const;
 ---
 
 <section
@@ -20,7 +20,7 @@ const highlights = [
         </p>
 
         <h1
-          class="mt-5 font-display text-[clamp(2.4rem,5.6vw,4.1rem)] leading-[0.98] font-bold tracking-[-0.035em] text-balance text-cream"
+          class="mt-5 font-display text-[clamp(2.5rem,7.2vw,5rem)] leading-[0.98] font-bold tracking-[-0.035em] text-cream"
         >
           Your chess games, <span class="mark">as a real book.</span>
         </h1>

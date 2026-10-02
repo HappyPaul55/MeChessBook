@@ -117,6 +117,11 @@ it that way. Do not add another client framework.
   `src/components/ui/Button.astro` — the same styles as the main site.
 - Bands follow the main site: the hero and the closing print section are ink; the
   middle work section is paper; the footer is ink.
+- Headings use tight `leading-[0.98]` (matching the main site). The `.mark`
+  highlighter is drawn as a band sized to Space Grotesk's glyphs (0.96em at
+  0.24em) rather than a full `background`, because the font box (1.27em) is
+  taller than the line box and would bleed over the line above. Do not revert it
+  to `background: var(--color-yellow)`.
 - The **book keeps its own** type and layout — **Anton** + **Roboto**, pinned to
   `.book-container`. Changing its Tailwind classes changes the printed output;
   re-run the print check if you do.
