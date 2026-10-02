@@ -1,0 +1,11 @@
+{
+  "name": "client-chess-book-happypaul55-com",
+  "compatibility_date": "2026-09-26",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  },
+  // Workers Builds runs `wrangler preview` for branch/PR builds. It needs the
+  // `previews` block (it can be empty) or the preview deploy step fails.
+  "previews": {}
+}
