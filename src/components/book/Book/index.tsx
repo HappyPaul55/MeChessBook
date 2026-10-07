@@ -77,6 +77,15 @@ export default function Book(
     </CoverPage>,
   );
 
+  // Blank Page.
+  pages.push(<ContentPage
+    key="blank-page"
+    settings={props.data.settings}
+    className={activePage > pages.length ? "turned" : ""}
+    onClick={pageClickHandler}
+    pageNumber={pages.length}
+  />);
+
   // Imprint
   pages.push(
     <ContentPage
