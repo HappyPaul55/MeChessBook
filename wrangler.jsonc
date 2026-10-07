@@ -1,6 +1,10 @@
 {
   "name": "client-chess-book-happypaul55-com",
   "compatibility_date": "2026-09-26",
+  // Custom domains are managed in the Cloudflare dashboard. Explicitly disable the
+  // workers.dev route and version preview URLs so neither is re-enabled on deploy.
+  "workers_dev": false,
+  "preview_urls": false,
   "assets": {
     "directory": "./dist",
     "not_found_handling": "404-page"

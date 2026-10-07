@@ -148,6 +148,15 @@ it that way. Do not add another client framework.
     Otherwise the container and its ancestors sit above the pages and swallow
     their clicks, so the book turns back but never forward. `bun run check:pdf`
     asserts "clicking the right page advances the book".
+- **The preview's page turn is exempt from reduced motion.** The flip is the
+  primary interaction, so the global `prefers-reduced-motion` rule (which zeroes
+  every transition) is overridden for `.book-container.simulate > div`; an
+  instant spread-to-spread cut is more jarring than the turn. The original
+  Next.js build had no reduced-motion rule at all, so this restores its
+  behaviour. Keep the flip as the original **flat `rotateY`** — do not add a
+  `perspective` to the container; it makes the sheet fold the wrong way.
+  The reduced-motion block also re-enables `.spinner` (duration **and** iteration
+  count), because a loader that does not turn reads as a frozen page.
 - **`tailwind.config.js` is loaded via `@config`** and kept on purpose. Its
   `font.anton` entry sits in an unrecognised namespace, matching the original
   build where `font-anton` produced no rule. Do not "fix" it; the book's text
