@@ -731,6 +731,19 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
+  /* The book's page turn is the primary interaction, not decoration. Cutting
+     straight to the next spread is more jarring than the turn itself, so keep
+     the flip even when reduced motion is requested (the selector outranks the
+     `*` rule above). */
+  .book-container.simulate > div {
+    transition-duration: 2s !important;
+  }
+  /* The loading spinner is a progress indicator, not decoration: keep it
+     turning (duration and iteration count) so a long fetch never looks frozen. */
+  .spinner {
+    animation-duration: 0.9s !important;
+    animation-iteration-count: infinite !important;
+  }
 }
 
 /* ------------------------------------------------------------------
