@@ -15,6 +15,8 @@ export type PageProps = {
 };
 
 export default function Page(props: PageProps) {
+  const visibleNumber = props.pageNumber - 1;
+
   return (
     <div
       className={`overflow-hidden relative bg-white print:bg-none rounded-lg print:rounded-none ${
@@ -40,7 +42,7 @@ export default function Page(props: PageProps) {
               : "right-10 print:right-6"
           } ${props.settings.pageSize === "A5" && "text-sm"}`}
         >
-          {props.pageNumber}
+          {visibleNumber > 0 && visibleNumber}
         </div>
       )}
       {props.children}
