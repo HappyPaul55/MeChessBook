@@ -2,11 +2,11 @@ import type { User } from "../../lib/types";
 import PlayerTitle from "./PlayerTitle";
 
 export default function GameTitle(
-  props: { zoom?: number; white: User; black: User },
+  props: { zoom?: number; white: User; black: User; wrap?: boolean },
 ) {
   return (
     <h1
-      className="text-4xl mb-2 font-anton text-nowrap"
+      className={`text-4xl mb-2 font-anton ${props.wrap ? "text-wrap" : "text-nowrap"}`}
       style={{ zoom: props.zoom }}
     >
       <PlayerTitle player={props.white} />

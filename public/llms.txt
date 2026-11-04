@@ -1,0 +1,15 @@
+# Me Chess Book
+
+Me Chess Book turns your Lichess games into a printable chess book, complete with annotated game pages and printable A4 or A5 layouts. It runs entirely in your browser: there are no accounts, no uploads and no cookies.
+
+## Main pages
+
+- [Home](https://chess-book.happypaul55.com/): what Me Chess Book does and how it works.
+- [Make a book](https://chess-book.happypaul55.com/make): enter your Lichess username, choose A4 or A5, and generate your book.
+- [How to print](https://chess-book.happypaul55.com/how-to-print): print-dialog settings for a clean chess book PDF.
+- [Privacy](https://chess-book.happypaul55.com/privacy): how the site handles your data.
+
+## Elsewhere
+
+- [Source code](https://github.com/HappyPaul55/MeChessBook)
+- [HappyPaul55](https://www.happypaul55.com)
