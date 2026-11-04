@@ -381,7 +381,7 @@ Ship HTML and CSS for normal content pages. Add small JavaScript islands only fo
 reason: mobile navigation toggle, sticky-header state, form status messages, Leaflet map,
 gallery lightbox, or calculator.
 
-In the Lexiphanic build, JavaScript is limited to: removing the `no-js` class, the mobile
+In the Lexiphanic build, JavaScript is limited to: the mobile
 menu (with Escape-to-close and focus return), the scrolled-header state, and
 `IntersectionObserver` scroll reveals that are disabled under `prefers-reduced-motion`.
 
@@ -602,9 +602,10 @@ Ship `public/_headers` with every site. Lexiphanic's file:
 Notes:
 
 - Keep CSS and JS external: set `build.inlineStylesheets: "never"` and
-  `vite.build.assetsInlineLimit: 0`. Put early bootstrap code in `public/js/` and
-  use classes rather than `style` attributes. Do not add `'unsafe-inline'` or
-  `'unsafe-eval'`; extend the relevant directive for any third party you add.
+  `vite.build.assetsInlineLimit: 0`. Use `@media (scripting: none)` for the
+  no-JavaScript fallback rather than a bootstrap script, and use classes rather
+  than `style` attributes. Do not add `'unsafe-inline'` or `'unsafe-eval'`;
+  extend the relevant directive for any third party you add.
 - `Strict-Transport-Security` with `preload` assumes the domain is HTTPS-only. Omit
   `preload` until you are sure the client wants HSTS preload.
 - Use `public/_redirects` for renamed or legacy URLs, e.g.:
