@@ -21,6 +21,7 @@ function GameRow(props: {
       <div className="mb-2">
         <GameTitle
           zoom={0.4}
+          wrap={props.settings.pageSize === "A5"}
           black={props.game.black}
           white={props.game.white}
         />

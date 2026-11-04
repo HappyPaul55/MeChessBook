@@ -11,7 +11,7 @@ export default function PlayerTitle(
     );
   }
   return (
-    <span className="relative inline-block text-4xl">
+    <span className="relative inline-block max-w-full break-words text-4xl">
       {props.player.title && (
         <div className="bg-black text-white text-xl font-medium pt-1 rounded-sm font-[Roboto] rotate-270 block w-14 float-left text-center -mr-2 mt-2 -ml-2">
           {props.player.title}
