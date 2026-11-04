@@ -180,8 +180,11 @@ must be updated before anything else that collects personal data is added.
 - `sitemap-index.xml` (via `@astrojs/sitemap`) and `robots.txt`; the 404 is
   `noindex` and excluded from the sitemap.
 - `public/_headers` sets security headers (CSP, HSTS, `nosniff`, frame denial) and
-  caching. The CSP allows `connect-src 'self' https://lichess.org`, because the
-  browser fetches games directly from Lichess; everything else is same-origin.
+  caching. The CSP allows no `'unsafe-inline'`: CSS is external, and the static
+  build hashes Astro's island runtime into `dist/_headers` with
+  `src/integrations/csp-hashes.mjs`. It allows `connect-src 'self'
+  https://lichess.org`, because the browser fetches games directly from Lichess;
+  everything else is same-origin.
 - `public/_redirects` is present and empty (no legacy URLs yet).
 
 ## Licence

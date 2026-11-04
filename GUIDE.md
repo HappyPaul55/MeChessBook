@@ -381,7 +381,7 @@ Ship HTML and CSS for normal content pages. Add small JavaScript islands only fo
 reason: mobile navigation toggle, sticky-header state, form status messages, Leaflet map,
 gallery lightbox, or calculator.
 
-In the Lexiphanic build, JavaScript is limited to: removing the `no-js` class, the mobile
+In the Lexiphanic build, JavaScript is limited to: the mobile
 menu (with Escape-to-close and focus return), the scrolled-header state, and
 `IntersectionObserver` scroll reveals that are disabled under `prefers-reduced-motion`.
 
@@ -584,7 +584,7 @@ Ship `public/_headers` with every site. Lexiphanic's file:
   Permissions-Policy: camera=(), geolocation=(), microphone=()
   X-Frame-Options: DENY
   Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
+  Content-Security-Policy: default-src 'self'; base-uri 'self'; object-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; upgrade-insecure-requests
 
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
@@ -601,9 +601,11 @@ Ship `public/_headers` with every site. Lexiphanic's file:
 
 Notes:
 
-- Astro inlines critical CSS and one small bootstrap script, hence `'unsafe-inline'` for
-  `script-src`/`style-src` in the baseline. Tighten with hashes/nonces only if the design
-  allows; otherwise extend the directives for any third party you add.
+- Keep CSS and JS external: set `build.inlineStylesheets: "never"` and
+  `vite.build.assetsInlineLimit: 0`. Use `@media (scripting: none)` for the
+  no-JavaScript fallback rather than a bootstrap script, and use classes rather
+  than `style` attributes. Do not add `'unsafe-inline'` or `'unsafe-eval'`;
+  extend the relevant directive for any third party you add.
 - `Strict-Transport-Security` with `preload` assumes the domain is HTTPS-only. Omit
   `preload` until you are sure the client wants HSTS preload.
 - Use `public/_redirects` for renamed or legacy URLs, e.g.:
